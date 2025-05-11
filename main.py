@@ -10,8 +10,8 @@ play_again = True
 
 #Bouton rejouer
 bouton_width, bouton_height = 200, 50
-bouton_x = (largeur - bouton_width) // 4  # Centré horizontalement
-bouton_y = (hauteur - bouton_height) // 4  # Centré verticalement
+bouton_x = (largeur - bouton_width) // 2  # Centré horizontalement
+bouton_y = ((hauteur - bouton_height) // 10)*9  # Centré verticalement
 
 # Création de la fenêtre
 screen = pygame.display.set_mode((largeur, hauteur))
@@ -60,7 +60,7 @@ def position_joueur(joueur_x, joueur_y):
         joueur_y = max(0, min(hauteur - joueur_hauteur, joueur_y))
     return joueur_x, joueur_y
 
-def affichage_boutton(screen, text, x, y, width, height, color, text_color):
+def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
     pygame.draw.rect(screen, color, (x, y, width, height))  # Dessiner le rectangle du bouton
     font = pygame.font.Font(None, 36)  # Police par défaut, taille 36
     text_surface = font.render(text, True, text_color)  # Rendre le texte
