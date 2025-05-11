@@ -6,7 +6,12 @@ pygame.init()
 
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
+play_again = True
 
+#Bouton rejouer
+bouton_width, bouton_height = 200, 50
+bouton_x = (largeur - bouton_width) // 4  # Centré horizontalement
+bouton_y = (hauteur - bouton_height) // 4  # Centré verticalement
 
 # Création de la fenêtre
 screen = pygame.display.set_mode((largeur, hauteur))
@@ -34,15 +39,11 @@ mur_speed = 10  # Vitesse de déplacement du mur
 flag_vitesse = 0 # Variable pour la vitesse du mur
 
 
-# Boucle principale
-running = True
-while running:
-    # Afficher l'image de fond
-    screen.blit(background_image, (0, 0))
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:  # Fermer la fenêtre
-            running = False
-    screen.blit(background_image, (0, 0)) # Affiche l'image de fond
+#Game over
+gameover_image = pygame.image.load("game_over.png")
+gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))  
+
+def position_joueur(joueur_x, joueur_y):
     keys = pygame.key.get_pressed()
     if not(keys[pygame.K_SPACE]):
         joueur_y=hauteur/2
@@ -54,28 +55,64 @@ while running:
         joueur_x -= joueur_speed
     if keys[pygame.K_RIGHT]:
         joueur_x += joueur_speed 
-    if (joueur_x + joueur_largeur > mur_x and joueur_x < mur_x + largeur_mur and joueur_y + joueur_hauteur > mur_y and joueur_y < mur_y + hauteur_mur):
-        # Collision détectée, arret du programme
-        print("Collision avec le mur !")
-        pygame.quit()
-    # Mettre à jour l'affichage
     # Empêcher le joueur de sortir de l'écran
-    joueur_x = max(0, min(largeur - joueur_largeur, joueur_x))
-    joueur_y = max(0, min(hauteur - joueur_hauteur, joueur_y))
-    # Déplacer le mur vers la gauche
+        joueur_x = max(0, min(largeur - joueur_largeur, joueur_x))
+        joueur_y = max(0, min(hauteur - joueur_hauteur, joueur_y))
+    return joueur_x, joueur_y
 
-    mur_x -= mur_speed
+def affichage_boutton(screen, text, x, y, width, height, color, text_color):
+    pygame.draw.rect(screen, color, (x, y, width, height))  # Dessiner le rectangle du bouton
+    font = pygame.font.Font(None, 36)  # Police par défaut, taille 36
+    text_surface = font.render(text, True, text_color)  # Rendre le texte
+    text_rect = text_surface.get_rect(center=(x + width // 2, y + height // 2))  # Centrer le texte
+    screen.blit(text_surface, text_rect)  # Afficher le texte
+# Boucle principale
+# Boucle principale
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:  # Fermer la fenêtre
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:  # Si un clic est détecté
+            mouse_x, mouse_y = event.pos  # Position de la souris
+            if bouton_x <= mouse_x <= bouton_x + bouton_width and bouton_y <= mouse_y <= bouton_y + bouton_height:
+                # Réinitialiser les variables du jeu
+                joueur_x = largeur // 2
+                joueur_y = hauteur // 2
+                mur_x = largeur
+                play_again = True
 
-    if mur_x <largeur_mur:  # Si le mur sort de l'écran, le remettre à droite
-        mur_x = largeur
-    print(f"Mur position: x={mur_x}, y={mur_y}")
+    if play_again:  # Si le jeu est en cours
+        # Afficher l'image de fond
+        screen.blit(background_image, (0, 0))
 
-    # Dessiner le mur
-    screen.blit(image_des_murs, (mur_x, mur_y))
-   
-    # Afficher le joueur
-    screen.blit(joueur_image, (joueur_x, joueur_y))
+        # Mettre à jour la position du joueur
+        joueur_x, joueur_y = position_joueur(joueur_x, joueur_y)
 
+        # Déplacer le mur vers la gauche
+        mur_x -= mur_speed
+        if mur_x < -largeur_mur:  # Si le mur sort de l'écran, le remettre à droite
+            mur_x = largeur
+
+        # Vérifier la collision entre le joueur et le mur
+        if (joueur_x + joueur_largeur > mur_x and joueur_x < mur_x + largeur_mur and
+            joueur_y + joueur_hauteur > mur_y and joueur_y < mur_y + hauteur_mur):
+            play_again = False
+
+        # Dessiner le mur
+        screen.blit(image_des_murs, (mur_x, mur_y))
+
+        # Afficher le joueur
+        screen.blit(joueur_image, (joueur_x, joueur_y))
+
+    else:  # Si le jeu est terminé
+        # Afficher l'écran de Game Over
+        screen.blit(gameover_image, (0, 0))
+
+        # Afficher le bouton "Rejouer"
+        affichage_boutton(screen, "Rejouer", bouton_x, bouton_y, bouton_width, bouton_height, (255, 0, 0), (255, 255, 255))
+
+    # Mettre à jour l'affichage
     pygame.display.flip()
 
 # Quitter pygame
