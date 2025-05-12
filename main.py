@@ -1,6 +1,6 @@
 import pygame
 
-# Initialisation de pygame
+# Initialisation de pygame et de la fenêtre
 pygame.init()
 
 # Dimensions de la fenêtre
