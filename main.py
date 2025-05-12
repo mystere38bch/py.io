@@ -9,8 +9,7 @@ largeur, hauteur = 1000, 600
 play_again = True
 game_speed = 2
 saute=0
-
-typedef 
+momentum_du_saut=0
 
 #Bouton rejouer
 bouton_width, bouton_height = 200, 50
@@ -47,18 +46,19 @@ flag_vitesse = 0 # Variable pour la vitesse du mur
 gameover_image = pygame.image.load("game_over.png")
 gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))  
 
-def position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y):
+def position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y, momentum_du_saut, saute):
     keys = pygame.key.get_pressed()
-    if not(keys[pygame.K_SPACE]):
-        joueur_y=hauteur/2
-    if keys[pygame.K_SPACE]:
-        saute+=1
-        if (saute<500):
+    if keys[pygame.K_SPACE] or momentum_du_saut==1:
+        
+        if (saute<50):
             joueur_y -= joueur_speed
-       if (saute>=500):
+            saute+=1
         else:
-            mur_speed = game_speed
-        joueur_y =hauteur//2 - hauteur_mur
+            joueur_y += joueur_speed
+            saute-=1
+        if saute==0:
+            momentum_du_saut=0
+        
     if keys[pygame.K_DOWN]:
         joueur_y += joueur_speed
     if keys[pygame.K_LEFT]:
@@ -69,9 +69,10 @@ def position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y):
         mur_speed= game_speed
     if (joueur_y==mur_y):
         joueur_y=hauteur//2 - hauteur_mur
+    mur_speed = game_speed #dépalcement automatoique du mur
     # Empêcher le joueur de sortir de l'écran
-        joueur_x = max(0, min(largeur - joueur_largeur, joueur_x))
-        joueur_y = max(0, min(hauteur - joueur_hauteur, joueur_y))
+    joueur_x = max(0, min(largeur - joueur_largeur, joueur_x))
+    joueur_y = max(0, min(hauteur - joueur_hauteur, joueur_y))
     return joueur_x, joueur_y , mur_speed
 
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
@@ -102,7 +103,7 @@ while running:
         screen.blit(background_image, (0, 0))
 
         # Mettre à jour la position du joueur
-        joueur_x, joueur_y,mur_speed = position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y)
+        joueur_x, joueur_y,mur_speed = position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y,momentum_du_saut, saute)
 
         # Déplacer le mur vers la gauche
         mur_x -= mur_speed
