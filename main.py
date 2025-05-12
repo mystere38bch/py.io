@@ -30,10 +30,12 @@ class Joeur:
         self.y = y
         self.vitesse = vitesse #vitesse de déplacement du perso
 perso = Joeur(largeur//2, hauteur//2, 5)  # Initialisation du perso
-perso_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
+perso_image1 = pygame.image.load("perso1.png")
+perso_image2 = pygame.image.load("perso2.png") 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
-perso_image = pygame.transform.scale(perso_image, (perso_largeur, perso_hauteur))  # Redimensionner l'image du perso
-
+perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
+perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image_actuelle = perso_image1
 
 #objet a éviter
 image_des_murs = pygame.image.load("Capture d'écran 2024-09-27 201400.png")
@@ -133,8 +135,16 @@ while running:
         # Dessiner le mur
         screen.blit(image_des_murs, (mur_x, mur_y))
 
-        # Afficher le perso
-        screen.blit(perso_image, (perso.x, perso.y))
+       #courir
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_m]:
+        # alterner entre images
+            perso_image_actuelle = perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
+        else:
+            perso_image_actuelle =perso_image1
+
+         # Afficher le perso
+        screen.blit(perso_image_actuelle, (perso.x, perso.y))
 
     else:  # Si le jeu est terminé
         # Afficher l'écran de Game Over
