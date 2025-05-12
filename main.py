@@ -52,6 +52,7 @@ class Saut:
         self.position_saut=position_saut
         self.phase_saut=phase_saut
         self.sur_le_mur=0
+        self.arrivee=0
 s=Saut(0,0,1)
 
 def position_joueur(perso, mur_speed, mur_x, mur_y, s):
@@ -70,7 +71,7 @@ def position_joueur(perso, mur_speed, mur_x, mur_y, s):
     if s.saut_en_cours == 1 and s.phase_saut == 0:
         s.position_saut -= 1
         perso.y += 1
-    if s.saut_en_cours == 1 and s.phase_saut == 0 and s.position_saut == 0:
+    if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
         s.saut_en_cours = 0
         s.phase_saut = 1
 
@@ -83,14 +84,14 @@ def position_joueur(perso, mur_speed, mur_x, mur_y, s):
         mur_speed = game_speed
 
     # Collision avec le mur
-    if (perso.x + perso_largeur > mur_x and perso.x < mur_x + largeur_mur and perso.y + perso_hauteur < mur_y):  # Si le joueur touche le mur
-        perso.y = mur_y - perso_hauteur  # Place le joueur sur le mur
+    if (perso.x + perso_largeur > mur_x and perso.x < mur_x + largeur_mur and perso.y + perso_hauteur > mur_y):  # Si le joueur touche le mur
         s.sur_le_mur = True
+        s.arrivee = mur_y
     else:
         s.sur_le_mur = False
 
-    if not s.sur_le_mur and s.saut_en_cours == 0:
-        perso.y = min( hauteur//2-perso_hauteur, perso.y + 1 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
+    if s.sur_le_mur==False and s.saut_en_cours == 0:
+       perso.y = min( hauteur//2-perso_hauteur, perso.y + 1 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
 
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
