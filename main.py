@@ -23,14 +23,17 @@ pygame.display.set_caption("Jeu de OUUUUUF") # Titre de la fenêtre
 background_image = pygame.image.load("Capture d'écran 2024-10-03 202909.png") 
 background_image = pygame.transform.scale(background_image, (largeur, hauteur))  
 
-# Joueur
+# perso
+class Joeur:
+    def __init__(self, x, y, vitesse):
+        self.x = x 
+        self.y = y
+        self.vitesse = vitesse #vitesse de déplacement du perso
+perso = Joeur(largeur//2, hauteur//2, 5)  # Initialisation du perso
+perso_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
+perso_largeur, perso_hauteur = 50, 50  # Taille du perso
+perso_image = pygame.transform.scale(perso_image, (perso_largeur, perso_hauteur))  # Redimensionner l'image du perso
 
-joueur_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
-joueur_largeur, joueur_hauteur = 50, 50  # Taille du joueur
-joueur_image = pygame.transform.scale(joueur_image, (joueur_largeur, joueur_hauteur))  # Redimensionner l'image du joueur
-joueur_x = largeur // 2
-joueur_y = hauteur // 2
-joueur_speed = 5  # Vitesse de déplacement du joueur
 
 #objet a éviter
 image_des_murs = pygame.image.load("Capture d'écran 2024-09-27 201400.png")
@@ -46,34 +49,34 @@ flag_vitesse = 0 # Variable pour la vitesse du mur
 gameover_image = pygame.image.load("game_over.png")
 gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))  
 
-def position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y, momentum_du_saut, saute):
+def position_perso(perso, mur_speed, mur_x, mur_y, momentum_du_saut, saute):
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE] or momentum_du_saut==1:
         
-        if (saute<50):
-            joueur_y -= joueur_speed
+        if (saute<10):
+            perso.y -= perso.vitesse
             saute+=1
         else:
-            joueur_y += joueur_speed
+            perso.y += perso.vitesse
             saute-=1
         if saute==0:
             momentum_du_saut=0
         
     if keys[pygame.K_DOWN]:
-        joueur_y += joueur_speed
+        perso.y += perso.vitesse
     if keys[pygame.K_LEFT]:
-        joueur_x -= joueur_speed
+        perso.x -= perso.vitesse
         mur_speed= -game_speed
     if keys[pygame.K_RIGHT]:
-        joueur_x += joueur_speed 
+        perso.x += perso.vitesse 
         mur_speed= game_speed
-    if (joueur_y==mur_y):
-        joueur_y=hauteur//2 - hauteur_mur
+    if (perso.y==mur_y):
+        perso.y=hauteur//2 - hauteur_mur
     mur_speed = game_speed #dépalcement automatoique du mur
-    # Empêcher le joueur de sortir de l'écran
-    joueur_x = max(0, min(largeur - joueur_largeur, joueur_x))
-    joueur_y = max(0, min(hauteur - joueur_hauteur, joueur_y))
-    return joueur_x, joueur_y , mur_speed
+    # Empêcher le perso de sortir de l'écran
+    perso.x = max(0, min(largeur - perso_largeur, perso.x))
+    perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
+    return perso.x, perso.y , mur_speed
 
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
     pygame.draw.rect(screen, color, (x, y, width, height))  # Dessiner le rectangle du bouton
@@ -93,8 +96,8 @@ while running:
             mouse_x, mouse_y = event.pos  # Position de la souris
             if bouton_x <= mouse_x <= bouton_x + bouton_width and bouton_y <= mouse_y <= bouton_y + bouton_height:
                 # Réinitialiser les variables du jeu
-                joueur_x = largeur // 2
-                joueur_y = hauteur // 2
+                perso.x = largeur // 2
+                perso.y = hauteur // 2
                 mur_x = largeur
                 play_again = True
 
@@ -102,23 +105,23 @@ while running:
         # Afficher l'image de fond
         screen.blit(background_image, (0, 0))
 
-        # Mettre à jour la position du joueur
-        joueur_x, joueur_y,mur_speed = position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y,momentum_du_saut, saute)
+        # Mettre à jour la position du perso
+        perso.x, perso.y,mur_speed = position_perso(perso, mur_speed, mur_x, mur_y,momentum_du_saut, saute)
 
         # Déplacer le mur vers la gauche
         mur_x -= mur_speed
         if mur_x < -largeur_mur:  # Si le mur sort de l'écran, le remettre à droite
             mur_x = largeur
 
-        # Vérifier la collision entre le joueur et le mur
-        #if (joueur_x + joueur_largeur > mur_x and joueur_x < mur_x + largeur_mur and joueur_y + joueur_hauteur > mur_y and joueur_y < mur_y + hauteur_mur):
+        # Vérifier la collision entre le perso et le mur
+        #if (perso.x + perso_largeur > mur_x and perso.x < mur_x + largeur_mur and perso.y + perso_hauteur > mur_y and perso.y < mur_y + hauteur_mur):
         #   play_again = False
 
         # Dessiner le mur
         screen.blit(image_des_murs, (mur_x, mur_y))
 
-        # Afficher le joueur
-        screen.blit(joueur_image, (joueur_x, joueur_y))
+        # Afficher le perso
+        screen.blit(perso_image, (perso.x, perso.y))
 
     else:  # Si le jeu est terminé
         # Afficher l'écran de Game Over
