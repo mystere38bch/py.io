@@ -7,6 +7,10 @@ pygame.init()
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
+game_speed = 2
+saute=0
+
+typedef 
 
 #Bouton rejouer
 bouton_width, bouton_height = 200, 50
@@ -35,7 +39,7 @@ largeur_mur, hauteur_mur = 30, 30  # Taille du mur
 image_des_murs = pygame.transform.scale(image_des_murs, (largeur_mur, hauteur_mur))  #j'ai choisi la taille de manière aléatoire
 mur_x = largeur  # Position initiale de l'objet (hors de l'écran à droite)
 mur_y = hauteur // 2  # Position verticale du mur
-mur_speed = 10  # Vitesse de déplacement du mur
+mur_speed = 0  # Vitesse de déplacement du mur
 flag_vitesse = 0 # Variable pour la vitesse du mur
 
 
@@ -43,22 +47,32 @@ flag_vitesse = 0 # Variable pour la vitesse du mur
 gameover_image = pygame.image.load("game_over.png")
 gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))  
 
-def position_joueur(joueur_x, joueur_y):
+def position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y):
     keys = pygame.key.get_pressed()
     if not(keys[pygame.K_SPACE]):
         joueur_y=hauteur/2
     if keys[pygame.K_SPACE]:
-        joueur_y =joueur_hauteur//2
+        saute+=1
+        if (saute<500):
+            joueur_y -= joueur_speed
+       if (saute>=500):
+        else:
+            mur_speed = game_speed
+        joueur_y =hauteur//2 - hauteur_mur
     if keys[pygame.K_DOWN]:
         joueur_y += joueur_speed
     if keys[pygame.K_LEFT]:
         joueur_x -= joueur_speed
+        mur_speed= -game_speed
     if keys[pygame.K_RIGHT]:
         joueur_x += joueur_speed 
+        mur_speed= game_speed
+    if (joueur_y==mur_y):
+        joueur_y=hauteur//2 - hauteur_mur
     # Empêcher le joueur de sortir de l'écran
         joueur_x = max(0, min(largeur - joueur_largeur, joueur_x))
         joueur_y = max(0, min(hauteur - joueur_hauteur, joueur_y))
-    return joueur_x, joueur_y
+    return joueur_x, joueur_y , mur_speed
 
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
     pygame.draw.rect(screen, color, (x, y, width, height))  # Dessiner le rectangle du bouton
@@ -70,6 +84,7 @@ def affichage_boutton(screen, text, x, y, width, height, color, text_color): #ex
 # Boucle principale
 running = True
 while running:
+    mur_speed = 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Fermer la fenêtre
             running = False
@@ -87,7 +102,7 @@ while running:
         screen.blit(background_image, (0, 0))
 
         # Mettre à jour la position du joueur
-        joueur_x, joueur_y = position_joueur(joueur_x, joueur_y)
+        joueur_x, joueur_y,mur_speed = position_joueur(joueur_x, joueur_y, mur_speed, mur_x, mur_y)
 
         # Déplacer le mur vers la gauche
         mur_x -= mur_speed
@@ -95,9 +110,8 @@ while running:
             mur_x = largeur
 
         # Vérifier la collision entre le joueur et le mur
-        if (joueur_x + joueur_largeur > mur_x and joueur_x < mur_x + largeur_mur and
-            joueur_y + joueur_hauteur > mur_y and joueur_y < mur_y + hauteur_mur):
-            play_again = False
+        #if (joueur_x + joueur_largeur > mur_x and joueur_x < mur_x + largeur_mur and joueur_y + joueur_hauteur > mur_y and joueur_y < mur_y + hauteur_mur):
+        #   play_again = False
 
         # Dessiner le mur
         screen.blit(image_des_murs, (mur_x, mur_y))
