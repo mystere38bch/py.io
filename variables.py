@@ -79,7 +79,7 @@ class Saut:
         self.position_saut=position_saut
         self.phase_saut=phase_saut
         self.sur_le_mur=0
-        self.arrivee=0
+        self.arrivee=hauteur//2
 s=Saut(0,0,1)
 
 
