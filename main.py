@@ -1,5 +1,5 @@
 import pygame
-
+from ennemie import ennemi
 # Initialisation de pygame et de la fenêtre
 pygame.init()
 
@@ -15,25 +15,32 @@ bouton_y = ((hauteur - bouton_height) // 10)*9  # Centré verticalement
 
 
 #Game over
-gameover_image = pygame.image.load("game_over.png")
+gameover_image = pygame.image.load("./image/game_over.png")
 gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))
 
 # Création de la fenêtre
 screen = pygame.display.set_mode((largeur, hauteur))
 pygame.display.set_caption("Jeu de OUUUUUF") # Titre de la fenêtre
 # Charger l'image de fond
-background_image = pygame.image.load("Capture d'écran 2024-10-03 202909.png") 
+background_image = pygame.image.load("./image/fond.png") 
 background_image = pygame.transform.scale(background_image, (largeur, hauteur))  
 
 # Perso
-perso_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
+perso_image = pygame.image.load("./image/perso.png") 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 perso_image = pygame.transform.scale(perso_image, (perso_largeur, perso_hauteur))  # Redimensionner l'image du perso
-class Joueur:
+class Joueur(pygame.sprite.Sprite):
     def __init__(self, x, y, vitesse):
         self.x = x 
         self.y = y
+        self.image = pygame.transform.scale(perso_image, (50, 50))
+        self.rect = self.image.get_rect(topleft=(x, y))
         self.vitesse = vitesse #vitesse de déplacement du perso
+        self.vitesse=5
+
+    def draw(self, screen):
+        screen.blit(perso_image, (self.x, self.y))
+
 
 perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du perso
 
@@ -48,7 +55,7 @@ class Mur:
         self.hauteur = hauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
         
-objet_mur = Mur(largeur, hauteur//2-30, 0, 100, 30, "Capture d'écran 2024-09-27 201400.png")
+objet_mur = Mur(largeur, hauteur//2-30, 0, 100, 30, "./image/mur_de10.png")
 
 mur_speed = 0  # Vitesse de déplacement du mur/ tous les obstacles
 
@@ -128,6 +135,9 @@ def affichage_boutton(screen, text, x, y, width, height, color, text_color): #ex
     text_rect = text_surface.get_rect(center=(x + width // 2, y + height // 2))  # Centrer le texte
     screen.blit(text_surface, text_rect)  # Afficher le texte
 
+
+ennemi1 = ennemi(2, 2)
+
 # Boucle principale
 running = True
 while running:
@@ -148,6 +158,15 @@ while running:
     if play_again:  # Si le jeu est en cours
         # Afficher l'image de fond
         screen.blit(background_image, (0, 0))
+
+
+        
+        ennemi1.mettre_a_jour()
+        ennemi1.dessiner(screen)
+
+        if ennemi1.collision_avec(perso.rect):  # perso.rect doit exister
+            play_again = False
+
 
         # Mettre à jour la position du joueur
         perso.x, perso.y,mur_speed = position_joueur(perso, mur_speed, objet_mur,s)
