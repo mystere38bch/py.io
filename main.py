@@ -1,5 +1,5 @@
 import pygame
-
+import ennemie
 # Initialisation de pygame et de la fenêtre
 pygame.init()
 
@@ -77,6 +77,9 @@ class spike:
         self.hauteur = hauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
 spikes= spike(largeur/4, hauteur//2-30, 0, 100, 30, "perso1.png")
+
+#ennemie
+ennemie1 = ennemie.ennemi(largeur, hauteur//2-50)
 
 
 
@@ -192,7 +195,8 @@ while running:
                 perso.x = objet_mur.x - perso_largeur
             elif perso.x > objet_mur.x : 
                 perso.x = objet_mur.x + objet_mur.largeur
-
+        #mettre a jour position ennemi
+        ennemi1.mettre_a_jour()
 
 
         # Vérifier la collision entre le perso et le mur
@@ -202,7 +206,8 @@ while running:
         # Dessiner le mur
         for objet_mur in liste_mur:
             screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
-
+        # Dessiner l'ennemi
+        ennemi1.dessiner(screen)
 
         
 

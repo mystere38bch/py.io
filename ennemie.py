@@ -37,8 +37,3 @@ class ennemi(pygame.sprite.Sprite):
 
     def dessiner(self, screen):
         screen.blit(self.image, self.rect)
-
-    def collision_avec(self, joueur_rect):
-        if self.rect.colliderect(joueur_rect):
-            return True
-        return False
