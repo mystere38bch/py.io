@@ -6,7 +6,7 @@ pygame.init()
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
-game_speed = 1
+game_speed = 5  # Vitesse de déplacement du mur
 
 #Bouton rejouer
 bouton_width, bouton_height = 200, 50
@@ -94,20 +94,18 @@ def position_joueur(perso, objet_mur, s):
             perso.x-=1
         else:
             perso.x -= perso.vitesse
-            objet_mur.vitesse = 0
+            objet_mur.vitesse = game_speed
     if keys[pygame.K_RIGHT]:
         if (perso.x+ perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.y + perso_hauteur < objet_mur.y) and s.sur_le_mur == False:  # Si le joueur touche le mur
             perso.x = objet_mur.x - perso_largeur
             objet_mur.vitesse=0
-            game_speed = 0
         elif (s.sur_le_mur==True):
             objet_mur.vitesse=perso.vitesse
             perso.x+=1
         else:
-            game_speed = 1
             perso.x += perso.vitesse
             objet_mur.vitesse = game_speed
-
+ 
     # Collision avec le mur
     if (perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.y + perso_hauteur > objet_mur.y):  # Si le joueur touche le mur
         s.sur_le_mur = True
@@ -122,6 +120,9 @@ def position_joueur(perso, objet_mur, s):
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
 
+    objet_mur.x -= objet_mur.vitesse  # Déplacer le mur vers la gauche
+    if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
+        objet_mur.x = largeur
     return perso, objet_mur
 
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
@@ -153,6 +154,8 @@ while running:
 
         # Mettre à jour la position du joueur
         perso,objet_mur = position_joueur(perso, objet_mur,s)
+        if (perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.y + perso_hauteur > objet_mur.y):  # Si le joueur touche le mur
+            perso.x = objet_mur.x - perso_largeur
 
 
         # Vérifier la collision entre le perso et le mur
