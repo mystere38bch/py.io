@@ -34,18 +34,22 @@ class Joueur:
         self.x = x 
         self.y = y
         self.vitesse = vitesse #vitesse de déplacement du perso
-<<<<<<< HEAD
 
-perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du perso
-=======
-perso = Joeur(largeur//2, hauteur//2, 5)  # Initialisation du perso
+
+perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
+perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
 perso_image1 = pygame.image.load("perso1.png")
 perso_image2 = pygame.image.load("perso2.png") 
+perso_image7 = pygame.image.load("perso7.png") 
+perso_image8 = pygame.image.load("perso8.png") 
+
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
 perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image_actuelle = perso_image1
->>>>>>> omar-version
+
 
 # Objet a éviter
 image_des_murs = pygame.image.load("Capture d'écran 2024-09-27 201400.png")
@@ -81,6 +85,7 @@ def position_joueur(perso, mur_speed, mur_x, mur_y, s):
     if s.saut_en_cours == 1 and s.phase_saut == 0:
         s.position_saut -= 1
         perso.y += 1
+        
     if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
         s.saut_en_cours = 0
         s.phase_saut = 1
@@ -114,6 +119,10 @@ def position_joueur(perso, mur_speed, mur_x, mur_y, s):
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
+    #remettre phase saut a 0 
+    if s.saut_en_cours and s.phase_saut == 0 and perso.y >= hauteur//2 - perso_hauteur:
+        s.saut_en_cours = 0
+        s.phase_saut = 1
 
     return perso.x, perso.y, mur_speed
 
@@ -140,6 +149,25 @@ while running:
                 mur_x = largeur
                 mur_x = hauteur // 2 - hauteur_mur
                 play_again = True
+        keys = pygame.key.get_pressed()
+
+    # Gestion du saut
+    if keys[pygame.K_SPACE]:
+        if s.saut_en_cours == 0:
+            s.saut_en_cours = 1
+            s.position_saut = 0
+    if s.saut_en_cours == 1 and s.phase_saut == 1:
+        s.position_saut += 1
+        perso.y -= 1
+        if s.position_saut > 50:
+            s.phase_saut = 0
+    if s.saut_en_cours == 1 and s.phase_saut == 0:
+        s.position_saut -= 1
+        perso.y += 1
+        
+    if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
+        s.saut_en_cours = 0
+        s.phase_saut = 1
 
     if play_again:  # Si le jeu est en cours
         # Afficher l'image de fond
@@ -162,15 +190,21 @@ while running:
         # Dessiner le mur
         screen.blit(image_des_murs, (mur_x, mur_y))
 
-       #courir
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_m]:
-        # alterner entre images
-            perso_image_actuelle = perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
-        else:
-            perso_image_actuelle =perso_image1
+        
 
-         # Afficher le perso
+
+       #animation courir / sauter
+        keys = pygame.key.get_pressed()
+        if s.saut_en_cours:                                   # e
+             perso_image_actuelle = perso_image7
+        elif keys[pygame.K_m]:                                # course au sol
+            perso_image_actuelle = (
+                perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
+            )
+        else:                                                 # immobile
+            perso_image_actuelle = perso_image1
+
+        # Afficher le perso
         screen.blit(perso_image_actuelle, (perso.x, perso.y))
 
     else:  # Si le jeu est terminé
