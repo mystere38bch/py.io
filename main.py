@@ -177,9 +177,6 @@ while running:
         s.position_saut -= 1
         perso.y += 1
         
-    if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
-        s.saut_en_cours = 0
-        s.phase_saut = 1
 
     if play_again:  # Si le jeu est en cours
         # Afficher l'image de fond
@@ -187,8 +184,12 @@ while running:
 
         # Mettre à jour la position du joueur
         perso,objet_mur = position_joueur(perso, objet_mur,s)
-        if (perso.x + perso_largeur > objet_mur.x  and perso.y + perso_hauteur >= objet_mur.y+3 and perso.x <objet_mur.x+ objet_mur.largeur):  # Si le joueur touche le mur
-            perso.x = objet_mur.x - perso_largeur
+        if (perso.x + perso_largeur > objet_mur.x  and perso.y + perso_hauteur >= objet_mur.y+game_speed+1 and perso.x <objet_mur.x+ objet_mur.largeur):  # Si le joueur touche le mur
+
+            if perso.x + perso_largeur - perso.vitesse< objet_mur.x +3 :  # Si le joueur est à droite du mur
+                perso.x = objet_mur.x - perso_largeur
+            elif perso.x > objet_mur.x : 
+                perso.x = objet_mur.x + objet_mur.largeur
 
 
 
