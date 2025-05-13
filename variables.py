@@ -61,8 +61,16 @@ class spike:
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
 spikes= spike(largeur/4, hauteur//2-30, 0, 100, 30, "perso1.png")
 
+class fireball:
+    def __init__(self, x, y, largeur, hauteur):
+        self.image = pygame.image.load("image/fireball.png")
+        self.x = x
+        self.y = y
+        self.largeur = largeur
+        self.hauteur = hauteur
+        self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
 
-
+fireballs=[]
 
 
 class Saut:

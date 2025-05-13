@@ -7,7 +7,7 @@ pygame.init()
 
 
 
-def position_joueur(perso, objet_mur, s):
+def gestion_touche(perso, objet_mur, s):
     keys = pygame.key.get_pressed()
 
     # Gestion du saut
@@ -33,6 +33,8 @@ def position_joueur(perso, objet_mur, s):
             perso.x -= perso.vitesse
     if keys[pygame.K_RIGHT]:
             perso.x += perso.vitesse
+    if keys[pygame.K_c]:
+        fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50))
  
     # Collision avec le mur
     if (perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.y + perso_hauteur >= objet_mur.y+1):  # Si le joueur touche le mur
@@ -105,21 +107,38 @@ while running:
         screen.blit(background_image, (0, 0))
 
         # Mettre à jour la position du joueur
-        perso,objet_mur = position_joueur(perso, objet_mur,s)
+        perso,objet_mur = gestion_touche(perso, objet_mur,s)
         if (perso.x + perso_largeur > objet_mur.x  and perso.y + perso_hauteur >= objet_mur.y+game_speed+1 and perso.x <objet_mur.x+ objet_mur.largeur):  # Si le joueur touche le mur
 
             if perso.x + perso_largeur - perso.vitesse< objet_mur.x +3 :  # Si le joueur est à droite du mur
                 perso.x = objet_mur.x - perso_largeur
             elif perso.x > objet_mur.x : 
                 perso.x = objet_mur.x + objet_mur.largeur
-        #mettre a jour position ennemi
-        
+
+
+        #mettre a jour position ennemi a modifier il fait pas des aller retour
         if ennemie1.x < 0:
             ennemie1.x = largeur
         elif ennemie1.x > largeur:
             ennemie1.x = 0
         else:
             ennemie1.x -= game_speed
+
+        #mettre a jour position fireball
+        for firebal in fireballs:
+            firebal.x += game_speed
+            if firebal.x > largeur:
+                fireballs.remove(firebal)
+        # Afficher les fireballs
+        for firebal in fireballs:
+            screen.blit(firebal.image, (firebal.x, firebal.y))
+            if (firebal.x + firebal.largeur > ennemie1.x and firebal.x < ennemie1.x + ennemie1.largeur and firebal.y + firebal.hauteur > ennemie1.y and firebal.y < ennemie1.y + ennemie1.hauteur):
+                fireballs.remove(firebal)
+                ennemie1.x = largeur
+                ennemie1.y = hauteur // 2 - ennemie1.hauteur
+                # Réinitialiser la position de l'ennemi
+                ennemie1.x = largeur
+                ennemie1.y = hauteur // 2 - ennemie1.hauteur
 
         # Vérifier la collision entre le perso et les spikes et ennemis
         if (perso.x + perso_largeur > ennemie1.x and perso.x < ennemie1.x + ennemie1.largeur and perso.y + perso_hauteur > ennemie1.y and perso.y < ennemie1.y + ennemie1.hauteur):
