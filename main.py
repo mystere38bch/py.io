@@ -34,6 +34,8 @@ class Joueur:
         self.x = x 
         self.y = y
         self.vitesse = vitesse #vitesse de déplacement du perso
+        self.image = pygame.transform.scale(perso_image, (50, 50))
+        self.rect = self.image.get_rect(topleft=(x, y))
 
 
 perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
