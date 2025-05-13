@@ -77,16 +77,22 @@ def position_joueur(perso, mur_speed, mur_x, mur_y, s):
 
     # Déplacement horizontal
     if keys[pygame.K_LEFT]:
-        if (perso.x+ perso_largeur > mur_x and perso.x < mur_x + largeur_mur and perso.y + perso_hauteur > mur_y):  # Si le joueur touche le mur
+        if (perso.x+ perso_largeur > mur_x and perso.x < mur_x + largeur_mur and perso.y + perso_hauteur < mur_y) and s.sur_le_mur == False:  # Si le joueur touche le mur
             perso.x = mur_x + largeur_mur
             mur_speed=0
+        elif (s.sur_le_mur==True):
+            mur_speed=-perso.vitesse
+            perso.x-=1
         else:
             perso.x -= perso.vitesse
-            mur_speed = -game_speed
+            mur_speed = game_speed
     if keys[pygame.K_RIGHT]:
-        if (perso.x+ perso_largeur > mur_x and perso.x < mur_x + largeur_mur and perso.y + perso_hauteur > mur_y):
+        if (perso.x+ perso_largeur > mur_x and perso.x < mur_x + largeur_mur and perso.y + perso_hauteur < mur_y) and s.sur_le_mur == False:  # Si le joueur touche le mur
             perso.x = mur_x - perso_largeur
             mur_speed=0
+        elif (s.sur_le_mur==True):
+            mur_speed=perso.vitesse
+            perso.x+=1
         else:
             perso.x += perso.vitesse
             mur_speed = game_speed
