@@ -38,16 +38,18 @@ class Joueur:
 
 perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
 perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
-perso_image1 = pygame.image.load("perso1.png")
-perso_image2 = pygame.image.load("perso2.png") 
-perso_image7 = pygame.image.load("perso7.png") 
-perso_image8 = pygame.image.load("perso8.png") 
+# Fichiers d’images à charger
+images = ["perso1.png", "perso2.png","perso3.png","perso4.png","perso5.png", "perso6.png","perso4.png", "perso8.png"]
 
-perso_largeur, perso_hauteur = 50, 50  # Taille du perso
-perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
-perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+
+Taille_perso = (50, 50)
+
+# Charge + convertit + redimensionne en une seule ligne
+persos = [
+    pygame.transform.scale(pygame.image.load(f), Taille_perso)
+    for f in images
+]
+perso_image1, perso_image2,perso_image3,perso_image4,perso_image5,perso_image6, perso_image7, perso_image8 = persos
 perso_image_actuelle = perso_image1
 
 
