@@ -39,7 +39,7 @@ class Joueur:
 perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
 perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
 # Fichiers d’images à charger
-images = ["perso1.png", "perso2.png","perso3.png","perso4.png","perso5.png", "perso6.png","perso4.png", "perso8.png"]
+images = ["perso1.png", "perso2.png","perso3.png","perso4.png","perso5.png", "perso6.png","perso7.png", "perso8.png","perso11.png"]
 
 
 Taille_perso = (50, 50)
@@ -49,7 +49,7 @@ persos = [
     pygame.transform.scale(pygame.image.load(f), Taille_perso)
     for f in images
 ]
-perso_image1, perso_image2,perso_image3,perso_image4,perso_image5,perso_image6, perso_image7, perso_image8 = persos
+perso_image1, perso_image2,perso_image3,perso_image4,perso_image5,perso_image6, perso_image7, perso_image8,perso_image11 = persos
 perso_image_actuelle = perso_image1
 
 
@@ -96,7 +96,6 @@ def position_joueur(perso, objet_mur, s):
     if s.saut_en_cours == 1 and s.phase_saut == 0:
         s.position_saut -= 1
         perso.y += 1
-        
     if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
         s.saut_en_cours = 0
         s.phase_saut = 1
@@ -117,6 +116,7 @@ def position_joueur(perso, objet_mur, s):
             perso.x = objet_mur.x - perso_largeur
             objet_mur.vitesse=0
             game_speed = 0
+            perso_image_actuelle= perso_image11
         elif (s.sur_le_mur==True):
             objet_mur.vitesse=perso.vitesse
             perso.x+=1
@@ -169,23 +169,7 @@ while running:
                 play_again = True
         keys = pygame.key.get_pressed()
 
-    # Gestion du saut
-    if keys[pygame.K_SPACE]:
-        if s.saut_en_cours == 0:
-            s.saut_en_cours = 1
-            s.position_saut = 0
-    if s.saut_en_cours == 1 and s.phase_saut == 1:
-        s.position_saut += 1
-        perso.y -= 1
-        if s.position_saut > 50:
-            s.phase_saut = 0
-    if s.saut_en_cours == 1 and s.phase_saut == 0:
-        s.position_saut -= 1
-        perso.y += 1
-        
-    if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
-        s.saut_en_cours = 0
-        s.phase_saut = 1
+  
 
     if play_again:  # Si le jeu est en cours
         # Afficher l'image de fond
@@ -203,21 +187,24 @@ while running:
         for objet_mur in liste_mur:
             screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
 
-
+        
         
 
 
        #animation courir / sauter
         keys = pygame.key.get_pressed()
-        if s.saut_en_cours:                                   # e
+        if s.saut_en_cours!=0:                                  
              perso_image_actuelle = perso_image7
-        elif keys[pygame.K_m]:                                # course au sol
+        elif keys[pygame.K_m]:                             
             perso_image_actuelle = (
                 perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
             )
-        else:                                                 # immobile
+        else:                                                
             perso_image_actuelle = perso_image1
 
+        if keys[pygame.K_LEFT]:
+            perso_image_actuelle= perso_image11
+            
         # Afficher le perso
         screen.blit(perso_image_actuelle, (perso.x, perso.y))
 
