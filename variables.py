@@ -72,7 +72,6 @@ class fireball:
 
 fireballs=[]
 
-
 class Saut:
     def __init__(self,saut_en_cours,position_saut,phase_saut):
         self.saut_en_cours=saut_en_cours
@@ -80,6 +79,8 @@ class Saut:
         self.phase_saut=phase_saut
         self.sur_le_mur=0
         self.arrivee=hauteur//2
+        self.vitesse=1
+        self.depart=hauteur//2
 s=Saut(0,0,1)
 
 
@@ -91,7 +92,7 @@ gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))
 screen = pygame.display.set_mode((largeur, hauteur))
 pygame.display.set_caption("Jeu de OUUUUUF") # Titre de la fenêtre
 # Charger l'image de fond
-background_image = pygame.image.load("Capture d'écran 2024-10-03 202909.png") 
+background_image = pygame.image.load("Fond.png") 
 background_image = pygame.transform.scale(background_image, (largeur, hauteur))  
 
 

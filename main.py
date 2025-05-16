@@ -16,29 +16,34 @@ def gestion_touche(perso, objet_mur, s):
         s.position_saut = 0
         s.phase_saut = 1
         s.arrivee = hauteur // 2
+        s.vitesse = 1
+        s.depart = perso.y
 
     if s.saut_en_cours == 1:
+        perso.y = 0.05*s.vitesse*s.vitesse - 5*s.vitesse + s.depart
+        s.vitesse += 1
         if s.phase_saut == 1:
             s.position_saut += 1
-            perso.y -= 1
             if s.position_saut > 50:
                 s.phase_saut = 0
         else :
             s.position_saut -= 1
-            perso.y += 1   
             if perso.y + perso_hauteur > s.arrivee:
                 s.saut_en_cours = 0
                 s.phase_saut = 1
-
+                perso.y  = s.arrivee - perso_hauteur
+        
     # Déplacement horizontal
     if keys[pygame.K_LEFT]:
-            perso.x -= perso.vitesse
+            perso.x -= perso.vitesse   
+            #objet_mur.x += perso.vitesse 
     if keys[pygame.K_RIGHT]:
             perso.x += perso.vitesse
+            #objet_mur.x -= perso.vitesse  # Déplacer le mur vers la gauche
+    
     if keys[pygame.K_c]:
-        if len(fireballs) < 5 :
+        if len(fireballs) < 3:
             fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50))
- 
     # Collision avec le mur
     if (perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur):
         s.arrivee = objet_mur.y        
