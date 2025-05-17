@@ -126,6 +126,6 @@ class ennemi:
         self.image3 = pygame.transform.scale(self.image3, (self.largeur, self.hauteur))
         self.temps_anim=0
     
-ennemie1 = ennemi(largeur, hauteur//2-50, 50, 50)
+ennemie1 = ennemi(largeur, hauteur//2-50,27,50)
 
 
