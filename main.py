@@ -54,20 +54,22 @@ def gestion_touche(perso,liste_mur,s):
 
     # Collision avec le mur
     for objet_mur in liste_mur:
-        if        perso.x+perso_largeur > objet_mur.x    and      perso.x < objet_mur.x + objet_mur.largeur:
-            s.arrivee = objet_mur.y        
-            if perso.y+perso_hauteur >= objet_mur.y:  # Si le joueur touche le mur
+        if perso.x+perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur: # Si le joueur dans l'aire du mur
+            if perso.y+perso_hauteur < objet_mur.y: # Si le joueur est au-dessus du mur
+                s.arrivee = objet_mur.y 
+                s.sur_le_mur = False      
+            else:                                   # Si le joueur touche le mur
                 s.sur_le_mur = True
-            else:
-                s.sur_le_mur = False
-            if perso.y + perso_hauteur >= objet_mur.y+1:  # Si le joueur touche le mur
-                if perso.x + perso_largeur - perso.vitesse<= objet_mur.x +3 :  # Si le joueur est à droite du mur
-                    perso.x = objet_mur.x - perso_largeur
-                elif perso.x > objet_mur.x : 
-                    perso.x = objet_mur.x + objet_mur.largeur
+                perso.y = objet_mur.y- perso_hauteur
         else:
             s.sur_le_mur = False
             s.arrivee = hauteur//2
+            #if perso.x + perso_largeur - perso.vitesse <= objet_mur.x +3 :  # Si le joueur est à droite du mur
+            #    perso.x = objet_mur.x - perso_largeur
+            #elif perso.x > objet_mur.x : 
+            #    perso.x = objet_mur.x + objet_mur.largeur       
+                
+        
         
 
 
