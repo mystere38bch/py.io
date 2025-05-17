@@ -42,22 +42,39 @@ def gestion_touche(perso,liste_mur,s):
     if keys[pygame.K_c]:
         if len(fireballs) < 3:
             fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50))
+
+
+
+
+
+
+
+
+
+
     # Collision avec le mur
     for objet_mur in liste_mur:
-        if (perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur):
+        if        perso.x+perso_largeur > objet_mur.x    and      perso.x < objet_mur.x + objet_mur.largeur:
             s.arrivee = objet_mur.y        
-            if(perso.y+perso_hauteur >= objet_mur.y):  # Si le joueur touche le mur
+            if perso.y+perso_hauteur >= objet_mur.y:  # Si le joueur touche le mur
                 s.sur_le_mur = True
             else:
                 s.sur_le_mur = False
+            if perso.y + perso_hauteur >= objet_mur.y+1:  # Si le joueur touche le mur
+                if perso.x + perso_largeur - perso.vitesse<= objet_mur.x +3 :  # Si le joueur est à droite du mur
+                    perso.x = objet_mur.x - perso_largeur
+                elif perso.x > objet_mur.x : 
+                    perso.x = objet_mur.x + objet_mur.largeur
         else:
             s.sur_le_mur = False
-            s.arrivee = hauteur // 2
-        if (perso.x + perso_largeur > objet_mur.x  and perso.y + perso_hauteur >= objet_mur.y+game_speed+1 and perso.x <objet_mur.x+ objet_mur.largeur):  # Si le joueur touche le mur
-            if perso.x + perso_largeur - perso.vitesse<= objet_mur.x +3 :  # Si le joueur est à droite du mur
-                perso.x = objet_mur.x - perso_largeur
-            elif perso.x > objet_mur.x : 
-                perso.x = objet_mur.x + objet_mur.largeur
+            s.arrivee = hauteur//2
+        
+
+
+
+
+
+
         
         if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
             objet_mur.x = largeur
