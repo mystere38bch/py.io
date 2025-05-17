@@ -35,11 +35,12 @@ def gestion_touche(perso, objet_mur, s):
         
     # Déplacement horizontal
     if keys[pygame.K_LEFT]:
-            perso.x -= perso.vitesse   
-            #objet_mur.x += perso.vitesse 
+        perso.x -= perso.vitesse   
     if keys[pygame.K_RIGHT]:
+        if perso.x < largeur // 2:
             perso.x += perso.vitesse
-            #objet_mur.x -= perso.vitesse  # Déplacer le mur vers la gauche
+        else:
+            objet_mur.x -= perso.vitesse  # Déplacer le mur vers la gauche
     
     if keys[pygame.K_c]:
         if len(fireballs) < 3:
@@ -68,9 +69,10 @@ def gestion_touche(perso, objet_mur, s):
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
 
-    objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
+    #objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
     if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
         objet_mur.x = largeur
+
     return perso, objet_mur
 
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
@@ -105,7 +107,8 @@ while running:
         screen.blit(background_image, (0, 0))
 
         # Mettre à jour la position du joueur
-        perso,objet_mur = gestion_touche(perso, objet_mur,s)
+        for objet_mur in liste_mur:
+            perso,objet_mur = gestion_touche(perso, objet_mur,s)
        
 
 

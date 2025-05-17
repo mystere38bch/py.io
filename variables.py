@@ -46,8 +46,10 @@ class Mur:
         self.hauteur = hauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
         
-objet_mur = Mur(largeur, hauteur//2-30, 0, 100, 30, "Capture d'écran 2024-09-27 201400.png")
-liste_mur = [objet_mur]  # Liste des obstacles
+#objet_mur = Mur(largeur, hauteur//2-30, 0, 100, 30, "Capture d'écran 2024-09-27 201400.png")
+liste_mur = [Mur(largeur+10, hauteur//2-40, 0, 10, 40, "Capture d'écran 2024-09-27 201400.png"),
+             Mur(largeur+210, hauteur//2-20, 0, 200, 20, "Capture d'écran 2024-09-27 201400.png"),
+             Mur(largeur+220, hauteur//2-30, 0, 10, 30, "Capture d'écran 2024-09-27 201400.png")]  # Liste des obstacles
 
 
 #creation de spikes
