@@ -17,6 +17,7 @@ def gestion_touche(perso,liste_mur,s):
 
     if s.saut_en_cours == 1:
         perso.y = 0.05*s.vitesse*s.vitesse - 5*s.vitesse + s.depart
+        
         s.vitesse += 1
         if s.phase_saut == 1:
             s.position_saut += 1
@@ -31,8 +32,10 @@ def gestion_touche(perso,liste_mur,s):
         
     # Déplacement horizontal
     if keys[pygame.K_LEFT]:
-        perso.x -= perso.vitesse   
+        perso.x -= perso.vitesse
+        perso.sens = 0  
     if keys[pygame.K_RIGHT]:
+        perso.sens = 1  
         if perso.x < largeur // 2:
             perso.x += perso.vitesse
         else:
@@ -43,44 +46,31 @@ def gestion_touche(perso,liste_mur,s):
         if len(fireballs) < 3:
             fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50))
 
-
-
     # Collision avec le mur
     for objet_mur in liste_mur:
         if perso.y+perso_hauteur < objet_mur.y: # Si le joueur est au-dessus du mur
             s.arrivee = objet_mur.y 
             s.sur_le_mur = False      
         else:                                   # Si le joueur touche le mur
-            if perso.x+perso_largeur > objet_mur.x+10 and perso.x < objet_mur.x + objet_mur.largeur-10: # Si le joueur dans l'aire du mur
+            s.arrivee = hauteur//2
+            if perso.x+perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur: # Si le joueur dans l'aire du mur
                 s.sur_le_mur = True
+                print(perso.y)
                 perso.y = objet_mur.y- perso_hauteur  
             else:
                 s.sur_le_mur = False
-                s.arrivee = hauteur//2
-            
-
-        
-
-            #if perso.x + perso_largeur - perso.vitesse <= objet_mur.x +3 :  # Si le joueur est à droite du mur
-            #    perso.x = objet_mur.x - perso_largeur
-            #elif perso.x > objet_mur.x : 
-            #    perso.x = objet_mur.x + objet_mur.largeur        
-               
                 
-        
-        
-
-
-
-
-
-
+                
+                if perso.x+perso_largeur >= objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.sens == 1:
+                    perso.x = objet_mur.x - perso_largeur - perso.vitesse
+                elif perso.x+perso_largeur > objet_mur.x and perso.x <= objet_mur.x + objet_mur.largeur and perso.sens == 0:
+                    perso.x = objet_mur.x + objet_mur.largeur + perso.vitesse
         
         if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
             objet_mur.x = largeur
 
     if s.sur_le_mur==False and s.saut_en_cours == 0:
-       perso.y = min( hauteur//2-perso_hauteur, perso.y + 1 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
+        perso.y = min( hauteur//2-perso_hauteur, perso.y + 1 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
    
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
@@ -103,7 +93,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Fermer la fenêtre
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:  # Si un clic est détecté
+        if event.type == pygame.MOUSEBUTTONDOWN :  # Si un clic est détecté
             mouse_x, mouse_y = event.pos  # Position de la souris
             if bouton_x <= mouse_x <= bouton_x + bouton_width and bouton_y <= mouse_y <= bouton_y + bouton_height:
                 # Réinitialiser les variables du jeu

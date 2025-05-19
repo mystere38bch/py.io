@@ -21,6 +21,7 @@ class Joueur:
         self.vitesse = vitesse #vitesse de déplacement du perso
         self.image = pygame.transform.scale(perso_image, (50, 50))
         self.rect = self.image.get_rect(topleft=(x, y))
+        self.sens = 1
 
 perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
 perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
@@ -47,9 +48,9 @@ class Mur:
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
         
 #objet_mur = Mur(largeur, hauteur//2-30, 0, 100, 30, "Capture d'écran 2024-09-27 201400.png")
-liste_mur = [Mur(largeur+10, hauteur//2-40, 0, 10, 40, "Capture d'écran 2024-09-27 201400.png"),
-             Mur(largeur+210, hauteur//2-20, 0, 200, 20, "Capture d'écran 2024-09-27 201400.png"),
-             Mur(largeur+220, hauteur//2-30, 0, 10, 30, "Capture d'écran 2024-09-27 201400.png")]  # Liste des obstacles
+liste_mur = [Mur(largeur+10, hauteur//2-200, 0, 50, 40, "image/mur_de10.png"),
+             Mur(largeur+210, hauteur//2-20, 0, 200, 20, "image/mur_de10.png"),
+             Mur(largeur+220, hauteur//2-30, 0, 10, 30, "image/mur_de10.png")]  # Liste des obstacles
 
 
 #creation de spikes
