@@ -5,7 +5,7 @@ pygame.init()
 
 def gestion_touche(perso,liste_mur,s):
     keys = pygame.key.get_pressed()
-
+    s.arrivee = hauteur//2
     # Gestion du saut
     if (keys[pygame.K_SPACE] or keys[pygame.K_UP])and s.saut_en_cours == 0:
         s.saut_en_cours = 1
@@ -52,7 +52,6 @@ def gestion_touche(perso,liste_mur,s):
             s.arrivee = objet_mur.y 
             s.sur_le_mur = False      
         else:                                   # Si le joueur touche le mur
-            s.arrivee = hauteur//2
             if perso.x+perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur: # Si le joueur dans l'aire du mur
                 s.sur_le_mur = True
                 print(perso.y)
