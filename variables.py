@@ -52,7 +52,7 @@ class Mur:
         
 liste_mur = [Mur(0,  0,  50, 40, "image/mur_de10.png"),
              Mur(210, 0, 200, 20, "image/mur_de10.png"),
-             Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
+             Mur(220, 100,  150, 30, "image/mur_de10.png")]  # Liste des obstacles
 
 #creation de spikes
 class spike:

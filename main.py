@@ -52,21 +52,25 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance):
 
     # Collision avec le mur
     for objet_mur in liste_mur:
-        if perso.y+perso_hauteur < objet_mur.y: # Si le joueur est au-dessus du mur
+        if perso.y+perso_hauteur <= objet_mur.y: # Si le joueur est au-dessus du mur
             s.arrivee = objet_mur.y 
-            s.sur_le_mur = False      
+            s.sur_le_mur = False
+            print("zone1")      
         else:                                   # Si le joueur touche le mur
-            if perso.x+perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur: # Si le joueur dans l'aire du mur
+            if perso.x+perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.y+perso_hauteur <= objet_mur.y+objet_mur.hauteur: # Si le joueur dans l'aire du mur
                 s.sur_le_mur = True
-                print(perso.y)
-                perso.y = objet_mur.y- perso_hauteur  
+                s.saut_en_cours == 0
+                perso.y = objet_mur.y- perso_hauteur
+                
             else:
                 s.sur_le_mur = False
-                if perso.x+perso_largeur >= objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.sens == 1:
-                    perso.x = objet_mur.x - perso_largeur - perso.vitesse
-                elif perso.x+perso_largeur > objet_mur.x and perso.x <= objet_mur.x + objet_mur.largeur and perso.sens == 0:
-                    perso.x = objet_mur.x + objet_mur.largeur + perso.vitesse
-    
+                if perso.y+perso_hauteur > objet_mur.y and perso.y<objet_mur.y+objet_mur.hauteur:
+                    
+                    if perso.x+perso_largeur >= objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.sens == 1:
+                        perso.x = objet_mur.x - perso_largeur - perso.vitesse
+                    elif perso.x+perso_largeur > objet_mur.x and perso.x <= objet_mur.x + objet_mur.largeur and perso.sens == 0:
+                        perso.x = objet_mur.x + objet_mur.largeur + perso.vitesse
+        
         
         if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
             objet_mur.x = largeur-objet_mur.largeur+400
@@ -153,9 +157,8 @@ while running:
 
         # Vérifier la collision entre le perso et les spikes et ennemis
         for ennemie1 in ennemie:
-            for spikes in liste_spike:
-                if (perso.x + perso_largeur > ennemie1.x and perso.x < ennemie1.x + ennemie1.largeur and perso.y + perso_hauteur > ennemie1.y and perso.y < ennemie1.y + ennemie1.hauteur):
-                    play_again = False
+            if (perso.x + perso_largeur > ennemie1.x and perso.x < ennemie1.x + ennemie1.largeur and perso.y + perso_hauteur > ennemie1.y and perso.y < ennemie1.y + ennemie1.hauteur):
+                play_again = False
         
         
         # Dessiner le mur
@@ -164,7 +167,7 @@ while running:
         for spikes in liste_spike:
             screen.blit(spikes.image, (spikes.x, spikes.y))  # Afficher le spike
             if (perso.x + perso_largeur > spikes.x and perso.x < spikes.x + spikes.largeur and perso.y + perso_hauteur > spikes.y and perso.y < spikes.y + spikes.hauteur):
-                play_again = False
+                #play_again = False
                 print("collision avec le spike")
             
 
