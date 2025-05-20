@@ -4,6 +4,7 @@ import pygame
 largeur, hauteur = 1000, 600
 play_again = True
 game_speed = 1  # Vitesse de déplacement du mur
+distance = 0
 
 #Bouton rejouer
 bouton_width, bouton_height = 200, 50
@@ -38,31 +39,32 @@ perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur
 perso_image_actuelle = perso_image1
 
 
+
+
 class Mur:
-    def __init__(self, x, y, vitesse, largeur, hauteur, image):
+    def __init__(self, x, y, murlargeur, murhauteur, image):
         self.image = pygame.image.load(image)
-        self.x = x
-        self.y = y
-        self.largeur = largeur
-        self.hauteur = hauteur
+        self.x = murlargeur+x
+        self.y = hauteur//2-y-murhauteur
+        self.largeur = murlargeur
+        self.hauteur = murhauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
         
-#objet_mur = Mur(largeur, hauteur//2-30, 0, 100, 30, "Capture d'écran 2024-09-27 201400.png")
-liste_mur = [Mur(largeur+10, hauteur//2-200, 0, 50, 40, "image/mur_de10.png"),
-             Mur(largeur+210, hauteur//2-20, 0, 200, 20, "image/mur_de10.png"),
-             Mur(largeur+220, hauteur//2-30, 0, 10, 30, "image/mur_de10.png")]  # Liste des obstacles
-
+liste_mur = [Mur(0,  0,  50, 40, "image/mur_de10.png"),
+             Mur(210, 0, 200, 20, "image/mur_de10.png"),
+             Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
 
 #creation de spikes
 class spike:
-    def __init__(self, x, y, vitesse, largeur, hauteur, image):
+    def __init__(self, x, y, spikelargeur, spikehauteur, image):
         self.image = pygame.image.load(image)
-        self.x = x
-        self.y = y
-        self.largeur = largeur
-        self.hauteur = hauteur
+        self.x = spikehauteur+x
+        self.y = hauteur//2-y-spikehauteur
+        self.largeur = spikelargeur
+        self.hauteur = spikehauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
-spikes= spike(largeur/4, hauteur//2-30, 0, 100, 30, "perso1.png")
+liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
+               spike(300, 0, 100, 30, "perso1.png")]
 
 class fireball:
     def __init__(self, x, y, largeur, hauteur):
@@ -129,4 +131,4 @@ class ennemi:
     
 ennemie1 = ennemi(largeur, hauteur//2-50,27,50)
 
-
+ennemie=[ennemie1]
