@@ -5,7 +5,7 @@ pygame.init()
 
 def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
     keys = pygame.key.get_pressed()
-    s.arrivee = hauteur//2
+    s.arrivee = 3*hauteur//4
     # Gestion du saut
     if (keys[pygame.K_SPACE] or keys[pygame.K_UP])and s.saut_en_cours == 0:
         s.saut_en_cours = 1
@@ -99,7 +99,7 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
                 spikes.x = largeur-spikes.largeur+400
 
     if s.sur_le_mur==False and s.saut_en_cours == 0:
-        perso.y = min( hauteur//2-perso_hauteur, perso.y + 1 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
+        perso.y = min( 3*hauteur//4-perso_hauteur, perso.y + 1 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
 
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
@@ -125,16 +125,16 @@ while running:
             if bouton_x <= mouse_x <= bouton_x + bouton_width and bouton_y <= mouse_y <= bouton_y + bouton_height:
                 # Réinitialiser les variables du jeu
                 perso.x = largeur // 2
-                perso.y = hauteur // 2- perso_hauteur
+                perso.y = 3*hauteur // 4 - perso_hauteur
                 ennemie1.x = largeur
-                ennemie1.y = hauteur // 2 - ennemie1.hauteur
+                ennemie1.y = 3*hauteur // 4 - ennemie1.hauteur
                 liste_mur = [Mur(0,  60,  50, 40, "image/mur_de10.png"),
                             Mur(110, 60, 200, 20, "image/mur_de10.png"),
                             Mur(400, 60, 200, 20, "image/mur_de10.png"),
                             Mur(1000, 60,  100, 30, "image/mur_de10.png"),
                             Mur(820, 2000,  0, 0, "image/fond.png")]  # Liste des obstacles
-                liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
-                              spike(300, 0, 100, 30, "perso1.png")]
+                liste_spike= [spike(700, 0, 50, 30, "image/feu1.png"),
+                                spike(300, 0, 50, 30, "image/feu1.png")]
                 play_again = True
                 distance = 0
                 fireballs.clear()
