@@ -79,13 +79,13 @@ liste_spike= [spike(700, 0, 100, 30, "image/perso1.png"),
 
 class fireball:
     def __init__(self, x, y, largeur, hauteur,sens):
-        self.image = pygame.image.load("image/fireball.png")
         self.x = x
         self.y = y
         self.sens = sens
         self.largeur = largeur
         self.hauteur = hauteur
-        self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
+        self.image_right = pygame.transform.scale(pygame.image.load("image/fireball.png"), (self.largeur, self.hauteur))
+        self.image_left= pygame.transform.scale(pygame.image.load("image/fireball_left.png"), (self.largeur, self.hauteur))
 
 fireballs=[]
 
