@@ -151,7 +151,10 @@ while running:
                 fireballs.remove(firebal)
         # Afficher les fireballs
         for firebal in fireballs:
-            screen.blit(firebal.image, (firebal.x, firebal.y))
+            if firebal.sens == 1:
+                screen.blit(firebal.image_right, (firebal.x, firebal.y))
+            else:
+                screen.blit(firebal.image_left, (firebal.x, firebal.y))
             for ennemie1 in ennemie:
                 if (firebal.x + firebal.largeur > ennemie1.x and firebal.x < ennemie1.x + ennemie1.largeur and firebal.y + firebal.hauteur > ennemie1.y and firebal.y < ennemie1.y + ennemie1.hauteur):
                     fireballs.remove(firebal)
