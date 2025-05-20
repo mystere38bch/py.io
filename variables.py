@@ -4,7 +4,7 @@ import pygame
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
-game_speed = 1  # Vitesse de déplacement du mur
+game_speed = 0.2  # Vitesse de déplacement du mur
 distance = 0
 
 #Bouton rejouer
@@ -26,7 +26,7 @@ class Joueur:
         self.sens = 1
         self.run=0
 
-perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso 
+perso = Joueur(largeur//2, 3*hauteur//4, 0.5)  # Initialisation du perso 
 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 
@@ -56,22 +56,24 @@ perso_image_actuelle = perso_image1
 class Mur:
     def __init__(self, x, y, murlargeur, murhauteur, image):
         self.image = pygame.image.load(image)
-        self.x = murlargeur+x
-        self.y = hauteur//2-y-murhauteur
+        self.x = x
+        self.y = 3*hauteur//4-y-murhauteur
         self.largeur = murlargeur
         self.hauteur = murhauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
         
-liste_mur = [Mur(0,  0,  50, 40, "image/mur_de10.png"),
-             Mur(210, 0, 200, 20, "image/mur_de10.png"),
-             Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
+liste_mur = [Mur(0,  60,  50, 40, "image/mur_de10.png"),
+             Mur(110, 60, 200, 20, "image/mur_de10.png"),
+             Mur(400, 60, 200, 20, "image/mur_de10.png"),
+             Mur(1000, 60,  100, 30, "image/mur_de10.png"),
+             Mur(200, 2000,  0, 0, "image/fond.png")]  # Liste des obstacles
 
 #creation de spikes
 class spike:
     def __init__(self, x, y, spikelargeur, spikehauteur, image):
         self.image = pygame.image.load(image)
         self.x = spikehauteur+x
-        self.y = hauteur//2-y-spikehauteur
+        self.y = 3*hauteur//4-y-spikehauteur
         self.largeur = spikelargeur
         self.hauteur = spikehauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
@@ -102,9 +104,9 @@ class Saut:
         self.position_saut=position_saut
         self.phase_saut=phase_saut
         self.sur_le_mur=0
-        self.arrivee=hauteur//2
+        self.arrivee=3*hauteur//4
         self.vitesse=1
-        self.depart=hauteur//2
+        self.depart=3*hauteur//4
 s=Saut(0,0,1)
 
 
@@ -116,25 +118,12 @@ gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))
 screen = pygame.display.set_mode((largeur, hauteur))
 pygame.display.set_caption("Jeu de OUUUUUF") # Titre de la fenêtre
 # Charger l'image de fond
-background_image = pygame.image.load("Fond.png") 
+background_image = pygame.image.load("image/fond.png") 
 background_image = pygame.transform.scale(background_image, (largeur, hauteur))  
 
 
-perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
-perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
-perso_image1 = pygame.image.load("image/perso1.png")
-perso_image2 = pygame.image.load("image/perso2.png") 
-perso_image7 = pygame.image.load("image/perso7.png") 
-perso_image8 = pygame.image.load("image/perso8.png") 
-perso_image11 = pygame.image.load("image/perso11.png") 
+perso = Joueur(largeur//2, 3*hauteur//4, 5)  # Initialisation du perso
 
-perso_largeur, perso_hauteur = 50, 50  # Taille du perso
-perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
-perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image11= pygame.transform.scale(perso_image11, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image_actuelle = perso_image1
 
 class ennemi:
     def __init__(self, x, y, largeur, hauteur):
@@ -151,6 +140,6 @@ class ennemi:
         self.image3 = pygame.transform.scale(self.image3, (self.largeur, self.hauteur))
         self.temps_anim=0
     
-ennemie1 = ennemi(largeur, hauteur//2-50,27,50)
+ennemie1 = ennemi(largeur, 3*hauteur//4-50,27,50)
 
 ennemie=[ennemie1]
