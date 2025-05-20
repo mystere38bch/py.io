@@ -132,10 +132,10 @@ while running:
         #mettre a jour position ennemi a modifier il fait pas des aller retour
         for mur in liste_mur:
             for ennemie1 in ennemie:
-                if (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x):
-                    ennemie1.x -= game_speed
-                if (ennemie1.x>mur.x and ennemie1.x<mur.x+mur.largeur):
-                    ennemie1.x += game_speed
+                if ((ennemie1.x<mur.x+mur.largeur and ennemie1.x+ennemie1.largeur>mur.x+mur.largeur) or (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x)):
+                    game_speed=-game_speed
+                ennemie1.x += game_speed
+
 
         #mettre a jour position fireball
         for firebal in fireballs:
