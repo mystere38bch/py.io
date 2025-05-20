@@ -87,7 +87,7 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
 
-    #objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
+    objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
 
     return perso, liste_mur,liste_spike, distance, ennemie
 
