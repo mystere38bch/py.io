@@ -176,7 +176,9 @@ while running:
         for objet_mur in liste_mur:
             screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
         for spikes in liste_spike:
-            screen.blit(spikes.image, (spikes.x, spikes.y))  # Afficher le spike
+            spikes.animer()          
+            screen.blit(spikes.image, (spikes.x, spikes.y))
+
             if (perso.x + perso_largeur > spikes.x and perso.x < spikes.x + spikes.largeur and perso.y + perso_hauteur > spikes.y and perso.y < spikes.y + spikes.hauteur):
                 play_again = False
                 print("collision avec le spike")

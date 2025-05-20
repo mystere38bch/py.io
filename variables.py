@@ -75,6 +75,12 @@ class spike:
         self.largeur = spikelargeur
         self.hauteur = spikehauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
+    def animer(self):
+        self.image = images_feu[(pygame.time.get_ticks() // 100) % 3]
+
+images_feu = [pygame.transform.scale(pygame.image.load(f"image/feu{i}.png"), (50, 30))
+          for i in (1, 2, 3)]
+
 liste_spike= [spike(700, 0, 50, 30, "image/feu1.png"),
                spike(300, 0, 50, 30, "image/feu1.png")]
 
