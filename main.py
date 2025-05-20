@@ -147,6 +147,8 @@ while running:
                 firebal.x -= abs(game_speed)*5
             if firebal.x > largeur:
                 fireballs.remove(firebal)
+            if firebal.x < 0:
+                fireballs.remove(firebal)
         # Afficher les fireballs
         for firebal in fireballs:
             screen.blit(firebal.image, (firebal.x, firebal.y))
