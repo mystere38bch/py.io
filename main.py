@@ -1,9 +1,3 @@
-import pygame.examples.aliens as aliens
-aliens.main()
-
-
-
-
 import pygame
 from variables import *
 # Initialisation de pygame et de la fenêtre
