@@ -39,17 +39,17 @@ class Joueur:
 perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
 perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
 # Fichiers d’images à charger
-images = ["perso1.png", "perso2.png","perso3.png","perso4.png","perso5.png", "perso6.png","perso7.png", "perso8.png","perso11.png"]
+images = ["perso1.png", "perso2.png","perso3.png","perso4.png","perso5.png", "perso6.png","perso7.png", "perso8.png","perso11.png","feu1.png","feu2.png","feu3.png"]
 
 
 Taille_perso = (50, 50)
 
 # Charge + convertit + redimensionne en une seule ligne
-persos = [
+data = [
     pygame.transform.scale(pygame.image.load(f), Taille_perso)
     for f in images
 ]
-perso_image1, perso_image2,perso_image3,perso_image4,perso_image5,perso_image6, perso_image7, perso_image8,perso_image11 = persos
+perso_image1, perso_image2,perso_image3,perso_image4,perso_image5,perso_image6, perso_image7, perso_image8,perso_image11,feu1,feu2,feu3 = data
 perso_image_actuelle = perso_image1
 
 
@@ -76,7 +76,7 @@ class spike:
         self.largeur = largeur
         self.hauteur = hauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
-spikes= spike(largeur/4, hauteur//2-30, 0, 100, 30, "perso1.png")
+spikes= spike(largeur/4, hauteur//2-30, 0, 50, 40, "feu1.png")
 
 
 
@@ -145,7 +145,7 @@ def position_joueur(perso, objet_mur, s):
         s.saut_en_cours = 0
         s.phase_saut = 1
 
-    objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
+    #objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
     if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
         objet_mur.x = largeur
     return perso, objet_mur
@@ -214,7 +214,11 @@ while running:
 
         if keys[pygame.K_LEFT]:
             perso_image_actuelle= perso_image11
-            
+        
+        tick = (pygame.time.get_ticks() // 200) % 3
+        image_name = f"feu{tick + 1}.png"
+        spikes.image = pygame.transform.scale(pygame.image.load(image_name), (spikes.largeur, spikes.hauteur))
+
         # Afficher le perso
         screen.blit(perso_image_actuelle, (perso.x, perso.y))
         screen.blit(spikes.image, (spikes.x, spikes.y))  # Afficher le spike
