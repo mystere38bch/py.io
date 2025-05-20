@@ -3,7 +3,7 @@ from variables import *
 # Initialisation de pygame et de la fenêtre
 pygame.init()
 
-def gestion_touche(perso,liste_mur,liste_spike,s,distance):
+def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
     keys = pygame.key.get_pressed()
     s.arrivee = hauteur//2
     # Gestion du saut
@@ -45,6 +45,9 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance):
                 objet_mur.x -= perso.vitesse  # Déplacer le mur vers la gauche
             for spikes in liste_spike:
                 spikes.x -= perso.vitesse
+            for ennemie1 in ennemie:
+                ennemie1.x -= perso.vitesse
+     
 
     if keys[pygame.K_c]:
         if len(fireballs) < 1:
@@ -66,6 +69,7 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance):
                     perso.x = objet_mur.x - perso_largeur - perso.vitesse
                 elif perso.x+perso_largeur > objet_mur.x and perso.x <= objet_mur.x + objet_mur.largeur and perso.sens == 0:
                     perso.x = objet_mur.x + objet_mur.largeur + perso.vitesse
+
     
         
         if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
@@ -83,7 +87,7 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance):
 
     #objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
 
-    return perso, liste_mur,liste_spike, distance
+    return perso, liste_mur,liste_spike, distance, ennemie
 
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
     pygame.draw.rect(screen, color, (x, y, width, height))  # Dessiner le rectangle du bouton
@@ -109,9 +113,11 @@ while running:
                 liste_mur =[Mur(0,  0,  50, 40, "image/mur_de10.png"),
                             Mur(210, 0, 200, 20, "image/mur_de10.png"),
                             Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
-                liste_spike= [spike(700, 0, 30, 30, "feu1.png"),
-                              spike(300, 0, 30, 30, "feu2.png")]
+                liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
+                              spike(300, 0, 100, 30, "perso1.png")]
                 play_again = True
+                distance = 0
+                fireballs.clear()
 
 
     if play_again:  # Si le jeu est en cours
@@ -119,18 +125,17 @@ while running:
         screen.blit(background_image, (0, 0))
 
         # Mettre à jour la position du joueur
-        perso,liste_mur,liste_spike,distance = gestion_touche(perso,liste_mur,liste_spike,s,distance)
+        perso,liste_mur,liste_spike,distance,ennemie = gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie)
        
 
 
         #mettre a jour position ennemi a modifier il fait pas des aller retour
-        for ennemie1 in ennemie:
-            if ennemie1.x < 0:
-                ennemie1.x = largeur
-            elif ennemie1.x > largeur:
-                ennemie1.x = 0
-            else:
-                ennemie1.x -= game_speed
+        for mur in liste_mur:
+            for ennemie1 in ennemie:
+                if ((ennemie1.x<mur.x+mur.largeur and ennemie1.x+ennemie1.largeur>mur.x+mur.largeur) or (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x)):
+                    game_speed=-game_speed
+                ennemie1.x += game_speed
+
 
         #mettre a jour position fireball
         for firebal in fireballs:
@@ -153,7 +158,6 @@ while running:
 
         # Vérifier la collision entre le perso et les spikes et ennemis
         for ennemie1 in ennemie:
-            for spikes in liste_spike:
                 if (perso.x + perso_largeur > ennemie1.x and perso.x < ennemie1.x + ennemie1.largeur and perso.y + perso_hauteur > ennemie1.y and perso.y < ennemie1.y + ennemie1.hauteur):
                     play_again = False
         
@@ -173,10 +177,10 @@ while running:
         keys = pygame.key.get_pressed()
         if s.saut_en_cours:                                   # saut
              perso_image_actuelle = perso_image7
-        elif keys[pygame.K_m]:                                # course au sol
-            perso_image_actuelle = (
-                perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
-            )
+        elif keys[pygame.K_RIGHT]:                                # course au sol
+            perso_image_actuelle = perso_run_right[(pygame.time.get_ticks() // 100) % 3] 
+        elif keys[pygame.K_LEFT]:
+            perso_image_actuelle = perso_run_left[(pygame.time.get_ticks() // 100) % 3] 
         else:                                                 # immobile
             perso_image_actuelle = perso_image1
 
