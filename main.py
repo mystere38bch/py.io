@@ -53,24 +53,38 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
         if len(fireballs) < 1:
             fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50))
 
+
+
+
     # Collision avec le mur
     for objet_mur in liste_mur:
-        if perso.y+perso_hauteur < objet_mur.y: # Si le joueur est au-dessus du mur
-            s.arrivee = objet_mur.y 
-            s.sur_le_mur = False      
-        else:                                   # Si le joueur touche le mur
-            if perso.x+perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur: # Si le joueur dans l'aire du mur
+        # Si le joueur est au-dessus du mur
+        if perso.y + perso_hauteur <= objet_mur.y:
+            s.arrivee = objet_mur.y
+            s.sur_le_mur = False
+        elif (perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and
+              perso.y + perso_hauteur > objet_mur.y and perso.y < objet_mur.y + objet_mur.hauteur):
+            # Collision avec le dessus du mur
+            if perso.y + perso_hauteur - perso.vitesse <= objet_mur.y:
                 s.sur_le_mur = True
-                print(perso.y)
-                perso.y = objet_mur.y- perso_hauteur  
+                s.saut_en_cours = 0
+                perso.y = objet_mur.y - perso_hauteur
+            # Empêcher de traverser le mur par le bas
+            elif perso.y < objet_mur.y + objet_mur.hauteur and perso.y > objet_mur.y and s.saut_en_cours:
+                perso.y = objet_mur.y + objet_mur.hauteur
+                s.saut_en_cours = 0
+                s.phase_saut = 1
+                s.sur_le_mur = False
             else:
                 s.sur_le_mur = False
-                if perso.x+perso_largeur >= objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and perso.sens == 1:
-                    perso.x = objet_mur.x - perso_largeur - perso.vitesse
-                elif perso.x+perso_largeur > objet_mur.x and perso.x <= objet_mur.x + objet_mur.largeur and perso.sens == 0:
-                    perso.x = objet_mur.x + objet_mur.largeur + perso.vitesse
-
-    
+                # Collision latérale droite
+                if perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x and perso.sens == 1:
+                    perso.x = objet_mur.x - perso_largeur
+                # Collision latérale gauche
+                elif perso.x < objet_mur.x + objet_mur.largeur and perso.x + perso_largeur > objet_mur.x + objet_mur.largeur and perso.sens == 0:
+                    perso.x = objet_mur.x + objet_mur.largeur
+        else:
+            s.sur_le_mur = False
         
         if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
             objet_mur.x = largeur-objet_mur.largeur+400
@@ -84,8 +98,6 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
-
-    #objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
 
     return perso, liste_mur,liste_spike, distance, ennemie
 
@@ -110,9 +122,11 @@ while running:
                 perso.y = hauteur // 2- perso_hauteur
                 ennemie1.x = largeur
                 ennemie1.y = hauteur // 2 - ennemie1.hauteur
-                liste_mur =[Mur(0,  0,  50, 40, "image/mur_de10.png"),
-                            Mur(210, 0, 200, 20, "image/mur_de10.png"),
-                            Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
+                liste_mur = [Mur(0,  60,  50, 40, "image/mur_de10.png"),
+                            Mur(110, 60, 200, 20, "image/mur_de10.png"),
+                            Mur(400, 60, 200, 20, "image/mur_de10.png"),
+                            Mur(1000, 60,  100, 30, "image/mur_de10.png"),
+                            Mur(820, 2000,  0, 0, "image/fond.png")]  # Liste des obstacles
                 liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
                               spike(300, 0, 100, 30, "perso1.png")]
                 play_again = True

@@ -45,15 +45,17 @@ perso_image_actuelle = perso_image1
 class Mur:
     def __init__(self, x, y, murlargeur, murhauteur, image):
         self.image = pygame.image.load(image)
-        self.x = murlargeur+x
+        self.x = x
         self.y = hauteur//2-y-murhauteur
         self.largeur = murlargeur
         self.hauteur = murhauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
         
-liste_mur = [Mur(0,  0,  50, 40, "image/mur_de10.png"),
-             Mur(210, 0, 200, 20, "image/mur_de10.png"),
-             Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
+liste_mur = [Mur(0,  60,  50, 40, "image/mur_de10.png"),
+             Mur(110, 60, 200, 20, "image/mur_de10.png"),
+             Mur(400, 60, 200, 20, "image/mur_de10.png"),
+             Mur(1000, 60,  100, 30, "image/mur_de10.png"),
+             Mur(200, 2000,  0, 0, "image/fond.png")]  # Liste des obstacles
 
 #creation de spikes
 class spike:
