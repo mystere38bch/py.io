@@ -177,10 +177,10 @@ while running:
         keys = pygame.key.get_pressed()
         if s.saut_en_cours:                                   # saut
              perso_image_actuelle = perso_image7
-        elif keys[pygame.K_m]:                                # course au sol
-            perso_image_actuelle = (
-                perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
-            )
+        elif keys[pygame.K_RIGHT]:                                # course au sol
+            perso_image_actuelle = perso_run_right[(pygame.time.get_ticks() // 100) % 3] 
+        elif keys[pygame.K_LEFT]:
+            perso_image_actuelle = perso_run_left[(pygame.time.get_ticks() // 100) % 3] 
         else:                                                 # immobile
             perso_image_actuelle = perso_image1
 
