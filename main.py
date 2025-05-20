@@ -47,11 +47,13 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
                 spikes.x -= perso.vitesse
             for ennemie1 in ennemie:
                 ennemie1.x -= perso.vitesse
+        perso.sens = 1
+
      
 
     if keys[pygame.K_c]:
         if len(fireballs) < 1:
-            fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50))
+            fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50, perso.sens))
 
     # Collision avec le mur
     for objet_mur in liste_mur:
@@ -139,7 +141,10 @@ while running:
 
         #mettre a jour position fireball
         for firebal in fireballs:
-            firebal.x += game_speed*5
+            if firebal.sens == 1:
+                firebal.x += abs(game_speed)*5
+            else:
+                firebal.x -= abs(game_speed)*5
             if firebal.x > largeur:
                 fireballs.remove(firebal)
         # Afficher les fireballs
