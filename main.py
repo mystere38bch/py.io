@@ -186,8 +186,10 @@ while running:
             perso_image_actuelle = perso_run_right[(pygame.time.get_ticks() // 100) % 3] 
         elif keys[pygame.K_LEFT]:
             perso_image_actuelle = perso_run_left[(pygame.time.get_ticks() // 100) % 3] 
-        else:                                                 # immobile
+        elif perso.sens==1:                                                 # immobile
             perso_image_actuelle = perso_image1
+        elif perso.sens==0:
+            perso_image_actuelle = perso1_left
 
         # Afficher le perso
         screen.blit(perso_image_actuelle, (perso.x, perso.y))
