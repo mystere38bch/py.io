@@ -53,7 +53,10 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
 
     if keys[pygame.K_c]:
         if len(fireballs) < 1:
-            fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50, perso.sens))
+            if perso.sens == 1:
+                fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50, perso.sens))
+            else:
+                fireballs.append(fireball(perso.x, perso.y-perso_hauteur/2, 50, 50, perso.sens))
 
     # Collision avec le mur
     for objet_mur in liste_mur:
@@ -86,8 +89,6 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
-
-    objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
 
     return perso, liste_mur,liste_spike, distance, ennemie
 
