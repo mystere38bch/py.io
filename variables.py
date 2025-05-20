@@ -74,8 +74,8 @@ class spike:
         self.largeur = spikelargeur
         self.hauteur = spikehauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
-liste_spike= [spike(700, -3, 100, 30, "image/feu1.png"),
-               spike(300, -3, 100, 30, "image/feu1.png")]
+liste_spike= [spike(700, 0, 50, 30, "image/feu1.png"),
+               spike(300, 0, 50, 30, "image/feu1.png")]
 
 class fireball:
     def __init__(self, x, y, largeur, hauteur,sens):
