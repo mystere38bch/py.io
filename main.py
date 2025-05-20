@@ -3,42 +3,116 @@ from variables import *
 # Initialisation de pygame et de la fenêtre
 pygame.init()
 
-def gestion_touche(perso,liste_mur,liste_spike,s,distance):
+# Dimensions de la fenêtre
+largeur, hauteur = 1000, 600
+play_again = True
+game_speed = 1  # Vitesse de déplacement du mur
+
+#Bouton rejouer
+bouton_width, bouton_height = 200, 50
+bouton_x = (largeur - bouton_width) // 2  # Centré horizontalement
+bouton_y = ((hauteur - bouton_height) // 10)*9  # Centré verticalement
+
+
+#Game over
+gameover_image = pygame.image.load("game_over.png")
+gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))
+
+# Création de la fenêtre
+screen = pygame.display.set_mode((largeur, hauteur))
+pygame.display.set_caption("Jeu de OUUUUUF") # Titre de la fenêtre
+# Charger l'image de fond
+background_image = pygame.image.load("Capture d'écran 2024-10-03 202909.png") 
+background_image = pygame.transform.scale(background_image, (largeur, hauteur))  
+
+# Perso
+perso_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
+perso_largeur, perso_hauteur = 50, 50  # Taille du perso
+perso_image = pygame.transform.scale(perso_image, (perso_largeur, perso_hauteur))  # Redimensionner l'image du perso
+class Joueur:
+    def __init__(self, x, y, vitesse):
+        self.x = x 
+        self.y = y
+        self.vitesse = vitesse #vitesse de déplacement du perso
+
+
+perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
+perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
+perso_image1 = pygame.image.load("perso1.png")
+perso_image2 = pygame.image.load("perso2.png") 
+perso_image7 = pygame.image.load("perso7.png") 
+perso_image8 = pygame.image.load("perso8.png") 
+
+perso_largeur, perso_hauteur = 50, 50  # Taille du perso
+perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
+perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image_actuelle = perso_image1
+
+
+# Objet a sauter dessus
+class Mur:
+    def __init__(self, x, y, vitesse, largeur, hauteur, image):
+        self.image = pygame.image.load(image)
+        self.x = x
+        self.y = y
+        self.largeur = largeur
+        self.hauteur = hauteur
+        self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
+        
+objet_mur = Mur(largeur, hauteur//2-30, 0, 100, 30, "Capture d'écran 2024-09-27 201400.png")
+liste_mur = [objet_mur]  # Liste des obstacles
+
+
+#creation de spikes
+class spike:
+    def __init__(self, x, y, vitesse, largeur, hauteur, image):
+        self.image = pygame.image.load(image)
+        self.x = x
+        self.y = y
+        self.largeur = largeur
+        self.hauteur = hauteur
+        self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
+spikes= spike(largeur/4, hauteur//2-30, 0, 100, 30, "perso1.png")
+
+
+
+class Saut:
+    def __init__(self,saut_en_cours,position_saut,phase_saut):
+        self.saut_en_cours=saut_en_cours
+        self.position_saut=position_saut
+        self.phase_saut=phase_saut
+        self.sur_le_mur=0
+        self.arrivee=0
+s=Saut(0,0,1)
+
+def position_joueur(perso, objet_mur, s):
     keys = pygame.key.get_pressed()
     s.arrivee = hauteur//2
     # Gestion du saut
-    if (keys[pygame.K_SPACE] or keys[pygame.K_UP])and s.saut_en_cours == 0:
-        s.saut_en_cours = 1
-        s.position_saut = 0
+    if keys[pygame.K_SPACE]:
+        if s.saut_en_cours == 0:
+            s.saut_en_cours = 1
+            s.position_saut = 0
+    if s.saut_en_cours == 1 and s.phase_saut == 1:
+        s.position_saut += 1
+        perso.y -= 1
+        if s.position_saut > 50:
+            s.phase_saut = 0
+    if s.saut_en_cours == 1 and s.phase_saut == 0:
+        s.position_saut -= 1
+        perso.y += 1
+        
+    if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
+        s.saut_en_cours = 0
         s.phase_saut = 1
-        s.arrivee = hauteur // 2
-        s.vitesse = 1
-        s.depart = perso.y
 
-    if s.saut_en_cours == 1:
-        perso.y = 0.05*s.vitesse*s.vitesse - 5*s.vitesse + s.depart
-        
-        s.vitesse += 1
-        if s.phase_saut == 1:
-            s.position_saut += 1
-            if s.position_saut > 50:
-                s.phase_saut = 0
-        else :
-            s.position_saut -= 1
-            if perso.y + perso_hauteur > s.arrivee:
-                s.saut_en_cours = 0
-                s.phase_saut = 1
-                perso.y  = s.arrivee - perso_hauteur
-        
     # Déplacement horizontal
     if keys[pygame.K_LEFT]:
         perso.x -= perso.vitesse
         perso.sens = 0  
     if keys[pygame.K_RIGHT]:
-        if(perso.x >= largeur // 2):
-            distance+= 1
-        perso.sens = 1  
-        if perso.x < largeur // 2:
             perso.x += perso.vitesse
         else:
             for objet_mur in liste_mur:
@@ -84,10 +158,15 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance):
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
+    #remettre phase saut a 0 
+    if s.saut_en_cours and s.phase_saut == 0 and perso.y >= hauteur//2 - perso_hauteur:
+        s.saut_en_cours = 0
+        s.phase_saut = 1
 
-    #objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
-
-    return perso, liste_mur,liste_spike, distance
+    objet_mur.x -= game_speed  # Déplacer le mur vers la gauche
+    if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
+        objet_mur.x = largeur
+    return perso, objet_mur
 
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
     pygame.draw.rect(screen, color, (x, y, width, height))  # Dessiner le rectangle du bouton
@@ -116,7 +195,25 @@ while running:
                 liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
                               spike(300, 0, 100, 30, "perso1.png")]
                 play_again = True
+        keys = pygame.key.get_pressed()
 
+    # Gestion du saut
+    if keys[pygame.K_SPACE]:
+        if s.saut_en_cours == 0:
+            s.saut_en_cours = 1
+            s.position_saut = 0
+    if s.saut_en_cours == 1 and s.phase_saut == 1:
+        s.position_saut += 1
+        perso.y -= 1
+        if s.position_saut > 50:
+            s.phase_saut = 0
+    if s.saut_en_cours == 1 and s.phase_saut == 0:
+        s.position_saut -= 1
+        perso.y += 1
+        
+    if s.saut_en_cours == 1 and s.phase_saut == 0 and perso.y+perso_hauteur >= s.arrivee:
+        s.saut_en_cours = 0
+        s.phase_saut = 1
 
     if play_again:  # Si le jeu est en cours
         # Afficher l'image de fond
@@ -174,14 +271,21 @@ while running:
 
        #animation courir / sauter
         keys = pygame.key.get_pressed()
-        if s.saut_en_cours:                                   # saut
+        if s.saut_en_cours:                                   # e
              perso_image_actuelle = perso_image7
-        elif keys[pygame.K_m]:                                # course au sol
+        elif keys[pygame.K_m]:                             
             perso_image_actuelle = (
                 perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
             )
-        else:                                                 # immobile
+        else:                                                
             perso_image_actuelle = perso_image1
+
+        if keys[pygame.K_LEFT]:
+            perso_image_actuelle= perso_image11
+        
+        tick = (pygame.time.get_ticks() // 200) % 3
+        image_name = f"feu{tick + 1}.png"
+        spikes.image = pygame.transform.scale(pygame.image.load(image_name), (spikes.largeur, spikes.hauteur))
 
         # Afficher le perso
         screen.blit(perso_image_actuelle, (perso.x, perso.y))
