@@ -47,6 +47,7 @@ perso1_left = pygame.transform.scale(pygame.image.load("image/perso1_left.png"),
 perso_image2 = pygame.transform.scale(pygame.image.load("image/perso2.png") , (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image7 = pygame.transform.scale(pygame.image.load("image/perso7.png") , (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image8= pygame.transform.scale(pygame.image.load("image/perso8.png"), (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image11= pygame.transform.scale(pygame.image.load("image/perso11.png"), (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image_actuelle = perso_image1
 
 
@@ -119,12 +120,14 @@ perso_image1 = pygame.image.load("image/perso1.png")
 perso_image2 = pygame.image.load("image/perso2.png") 
 perso_image7 = pygame.image.load("image/perso7.png") 
 perso_image8 = pygame.image.load("image/perso8.png") 
+perso_image11 = pygame.image.load("image/perso11.png") 
 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
 perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image11= pygame.transform.scale(perso_image11, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image_actuelle = perso_image1
 
 class ennemi:
