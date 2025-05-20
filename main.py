@@ -47,6 +47,7 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
                 spikes.x -= perso.vitesse
             for ennemie1 in ennemie:
                 ennemie1.x -= perso.vitesse
+            
         perso.sens = 1
 
      

@@ -4,7 +4,7 @@ import pygame
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
-game_speed = 1  # Vitesse de déplacement du mur
+game_speed = 0.5  # Vitesse de déplacement du mur
 distance = 0
 
 #Bouton rejouer
@@ -109,23 +109,9 @@ gameover_image = pygame.transform.scale(gameover_image, (largeur, hauteur))
 screen = pygame.display.set_mode((largeur, hauteur))
 pygame.display.set_caption("Jeu de OUUUUUF") # Titre de la fenêtre
 # Charger l'image de fond
-background_image = pygame.image.load("Fond.png") 
+background_image = pygame.image.load("image/fond.png") 
 background_image = pygame.transform.scale(background_image, (largeur, hauteur))  
 
-
-perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
-perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
-perso_image1 = pygame.image.load("image/perso1.png")
-perso_image2 = pygame.image.load("image/perso2.png") 
-perso_image7 = pygame.image.load("image/perso7.png") 
-perso_image8 = pygame.image.load("image/perso8.png") 
-
-perso_largeur, perso_hauteur = 50, 50  # Taille du perso
-perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
-perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image_actuelle = perso_image1
 
 class ennemi:
     def __init__(self, x, y, largeur, hauteur):
