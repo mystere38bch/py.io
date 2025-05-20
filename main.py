@@ -113,8 +113,8 @@ while running:
                 liste_mur =[Mur(0,  0,  50, 40, "image/mur_de10.png"),
                             Mur(210, 0, 200, 20, "image/mur_de10.png"),
                             Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
-                liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
-                              spike(300, 0, 100, 30, "perso1.png")]
+                liste_spike= [spike(700, 0, 100, 30, "image/perso1.png"),
+                              spike(300, 0, 100, 30, "image/perso1.png")]
                 play_again = True
                 distance = 0
                 fireballs.clear()
