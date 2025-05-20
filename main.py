@@ -109,8 +109,8 @@ while running:
                 liste_mur =[Mur(0,  0,  50, 40, "image/mur_de10.png"),
                             Mur(210, 0, 200, 20, "image/mur_de10.png"),
                             Mur(220, 30,  10, 30, "image/mur_de10.png")]  # Liste des obstacles
-                liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
-                              spike(300, 0, 100, 30, "perso1.png")]
+                liste_spike= [spike(700, 0, 30, 30, "feu1.png"),
+                              spike(300, 0, 30, 30, "feu2.png")]
                 play_again = True
 
 
@@ -179,6 +179,10 @@ while running:
             )
         else:                                                 # immobile
             perso_image_actuelle = perso_image1
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            perso_image_actuelle= perso_image11
 
         # Afficher le perso
         screen.blit(perso_image_actuelle, (perso.x, perso.y))
