@@ -24,19 +24,30 @@ class Joueur:
         self.image = pygame.transform.scale(perso_image, (50, 50))
         self.rect = self.image.get_rect(topleft=(x, y))
         self.sens = 1
+        self.run=0
 
-perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
-perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
-perso_image1 = pygame.image.load("perso1.png")
-perso_image2 = pygame.image.load("perso2.png") 
-perso_image7 = pygame.image.load("perso7.png") 
-perso_image8 = pygame.image.load("perso8.png") 
+perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso 
 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
-perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
-perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
-perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+
+perso_run_right= [
+    pygame.transform.scale(pygame.image.load("image/perso1.png"), (perso_largeur, perso_hauteur)) ,
+    pygame.transform.scale(pygame.image.load("image/perso2.png"), (perso_largeur, perso_hauteur)) ,
+    pygame.transform.scale(pygame.image.load("image/perso3.png"), (perso_largeur, perso_hauteur)) 
+
+]
+perso_run_left=[
+    pygame.transform.scale(pygame.image.load("image/perso1_left.png"), (perso_largeur, perso_hauteur)) ,
+    pygame.transform.scale(pygame.image.load("image/perso2_left.png"), (perso_largeur, perso_hauteur)) ,
+    pygame.transform.scale(pygame.image.load("image/perso3_left.png"), (perso_largeur, perso_hauteur)) 
+]
+
+perso_image1 = pygame.transform.scale(pygame.image.load("image/perso1.png"), (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
+perso1_left = pygame.transform.scale(pygame.image.load("image/perso1_left.png"), (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
+perso_image2 = pygame.transform.scale(pygame.image.load("image/perso2.png") , (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image7 = pygame.transform.scale(pygame.image.load("image/perso7.png") , (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image8= pygame.transform.scale(pygame.image.load("image/perso8.png"), (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image11= pygame.transform.scale(pygame.image.load("image/perso11.png"), (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image_actuelle = perso_image1
 
 
@@ -66,17 +77,18 @@ class spike:
         self.largeur = spikelargeur
         self.hauteur = spikehauteur
         self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
-liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
-               spike(300, 0, 100, 30, "perso1.png")]
+liste_spike= [spike(700, 0, 50, 30, "image/feu1.png"),
+               spike(300, 0, 50, 30, "image/feu1.png")]
 
 class fireball:
-    def __init__(self, x, y, largeur, hauteur):
-        self.image = pygame.image.load("image/fireball.png")
+    def __init__(self, x, y, largeur, hauteur,sens):
         self.x = x
         self.y = y
+        self.sens = sens
         self.largeur = largeur
         self.hauteur = hauteur
-        self.image = pygame.transform.scale(self.image, (self.largeur, self.hauteur))
+        self.image_right = pygame.transform.scale(pygame.image.load("image/fireball.png"), (self.largeur, self.hauteur))
+        self.image_left= pygame.transform.scale(pygame.image.load("image/fireball_left.png"), (self.largeur, self.hauteur))
 
 fireballs=[]
 
@@ -106,16 +118,18 @@ background_image = pygame.transform.scale(background_image, (largeur, hauteur))
 
 perso = Joueur(largeur//2, hauteur//2-perso_hauteur, 5)  # Initialisation du persos
 perso = Joueur(largeur//2, hauteur//2, 5)  # Initialisation du perso
-perso_image1 = pygame.image.load("perso1.png")
-perso_image2 = pygame.image.load("perso2.png") 
-perso_image7 = pygame.image.load("perso7.png") 
-perso_image8 = pygame.image.load("perso8.png") 
+perso_image1 = pygame.image.load("image/perso1.png")
+perso_image2 = pygame.image.load("image/perso2.png") 
+perso_image7 = pygame.image.load("image/perso7.png") 
+perso_image8 = pygame.image.load("image/perso8.png") 
+perso_image11 = pygame.image.load("image/perso11.png") 
 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 perso_image1 = pygame.transform.scale(perso_image1, (perso_largeur, perso_hauteur))  # Redimensionner l'image1 du perso
 perso_image2 = pygame.transform.scale(perso_image2, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image7 = pygame.transform.scale(perso_image7, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image8= pygame.transform.scale(perso_image8, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
+perso_image11= pygame.transform.scale(perso_image11, (perso_largeur, perso_hauteur))  # Redimensionner l'image2 du perso
 perso_image_actuelle = perso_image1
 
 class ennemi:
@@ -127,6 +141,7 @@ class ennemi:
         self.y = y
         self.largeur = largeur
         self.hauteur = hauteur
+        self.sens = 1
         self.image1 = pygame.transform.scale(self.image1, (self.largeur, self.hauteur))
         self.image2 = pygame.transform.scale(self.image2, (self.largeur, self.hauteur))
         self.image3 = pygame.transform.scale(self.image3, (self.largeur, self.hauteur))

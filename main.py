@@ -47,11 +47,16 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
                 spikes.x -= perso.vitesse
             for ennemie1 in ennemie:
                 ennemie1.x -= perso.vitesse
+        perso.sens = 1
+
      
 
     if keys[pygame.K_c]:
         if len(fireballs) < 1:
-            fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50))
+            if perso.sens == 1:
+                fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50, perso.sens))
+            else:
+                fireballs.append(fireball(perso.x, perso.y-perso_hauteur/2, 50, 50, perso.sens))
 
 
 
@@ -146,19 +151,27 @@ while running:
         #mettre a jour position ennemi a modifier il fait pas des aller retour
         for mur in liste_mur:
             for ennemie1 in ennemie:
-                if (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x):
-                    ennemie1.x -= game_speed
-                if (ennemie1.x>mur.x and ennemie1.x<mur.x+mur.largeur):
-                    ennemie1.x += game_speed
+                if ((ennemie1.x<mur.x+mur.largeur and ennemie1.x+ennemie1.largeur>mur.x+mur.largeur) or (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x)):
+                    game_speed=-game_speed
+                ennemie1.x += game_speed
+
 
         #mettre a jour position fireball
         for firebal in fireballs:
-            firebal.x += game_speed*5
+            if firebal.sens == 1:
+                firebal.x += abs(game_speed)*5
+            else:
+                firebal.x -= abs(game_speed)*5
             if firebal.x > largeur:
+                fireballs.remove(firebal)
+            if firebal.x < 0:
                 fireballs.remove(firebal)
         # Afficher les fireballs
         for firebal in fireballs:
-            screen.blit(firebal.image, (firebal.x, firebal.y))
+            if firebal.sens == 1:
+                screen.blit(firebal.image_right, (firebal.x, firebal.y))
+            else:
+                screen.blit(firebal.image_left, (firebal.x, firebal.y))
             for ennemie1 in ennemie:
                 if (firebal.x + firebal.largeur > ennemie1.x and firebal.x < ennemie1.x + ennemie1.largeur and firebal.y + firebal.hauteur > ennemie1.y and firebal.y < ennemie1.y + ennemie1.hauteur):
                     fireballs.remove(firebal)
@@ -191,14 +204,18 @@ while running:
         keys = pygame.key.get_pressed()
         if s.saut_en_cours:                                   # saut
              perso_image_actuelle = perso_image7
-        elif keys[pygame.K_m]:                                # course au sol
-            perso_image_actuelle = (
-                perso_image1 if (pygame.time.get_ticks() // 100) % 2 == 0 else perso_image2
-            )
-        else:                                                 # immobile
+        elif keys[pygame.K_RIGHT]:                                # course au sol
+            perso_image_actuelle = perso_run_right[(pygame.time.get_ticks() // 100) % 3] 
+        elif keys[pygame.K_LEFT]:
+            perso_image_actuelle = perso_run_left[(pygame.time.get_ticks() // 100) % 3] 
+        elif perso.sens==1:                                                 # immobile
             perso_image_actuelle = perso_image1
+        elif perso.sens==0:
+            perso_image_actuelle = perso1_left
 
         # Afficher le perso
+        if keys[pygame.K_LEFT]:
+            perso_image_actuelle= perso_image11
         screen.blit(perso_image_actuelle, (perso.x, perso.y))
         font = pygame.font.Font(None, 20)  # Taille du texte
         texte = font.render(f"Score:{distance}", True, (0, 0, 0))  # Blanc
