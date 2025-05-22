@@ -77,8 +77,9 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
             # Empêcher de traverser le mur par le bas
             elif perso.y < objet_mur.y + objet_mur.hauteur and perso.y > objet_mur.y and s.saut_en_cours:
                 perso.y = objet_mur.y + objet_mur.hauteur
-                s.saut_en_cours = 0
-                s.phase_saut = 1
+                s.saut_en_cours = 1
+                s.vitesse = 90
+                s.arrive = hauteur // 2
                 s.sur_le_mur = False
             else:
                 s.sur_le_mur = False
@@ -132,8 +133,8 @@ while running:
                             Mur(400, 60, 200, 20, "image/mur_de10.png"),
                             Mur(1000, 60,  100, 30, "image/mur_de10.png"),
                             Mur(820, 2000,  0, 0, "image/fond.png")]  # Liste des obstacles
-                liste_spike= [spike(700, 0, 100, 30, "perso1.png"),
-                              spike(300, 0, 100, 30, "perso1.png")]
+                liste_spike= [spike(700, 0, 50, 30, "image/feu1.png"),
+                            spike(300, 0, 50, 30, "image/feu1.png")]
                 play_again = True
                 distance = 0
                 fireballs.clear()
