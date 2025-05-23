@@ -109,6 +109,13 @@ class Saut:
         self.depart=3*hauteur//4
 s=Saut(0,0,1)
 
+class Chute:
+    def __init__(self,chute_en_cours):
+        self.chute_en_cours=chute_en_cours
+        self.arrivee=3*hauteur//4
+        self.vitesse=1
+        self.depart=3*hauteur//4
+c=Chute(0)
 
 #Game over
 gameover_image = pygame.image.load("game_over.png")

@@ -1,13 +1,15 @@
+
 import pygame
 from variables import *
 # Initialisation de pygame et de la fenêtre
 pygame.init()
+clock = pygame.time.Clock()
 
-def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
+def gestion_touche(perso,liste_mur,liste_spike,s,c,distance,ennemie):
     keys = pygame.key.get_pressed()
     s.arrivee = 3*hauteur//4
     # Gestion du saut
-    if (keys[pygame.K_SPACE] or keys[pygame.K_UP])and s.saut_en_cours == 0:
+    if (keys[pygame.K_SPACE] or keys[pygame.K_UP])and s.saut_en_cours == 0 and c.chute_en_cours == 0:
         s.saut_en_cours = 1
         s.position_saut = 0
         s.phase_saut = 1
@@ -15,9 +17,19 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
         s.vitesse = 1
         s.depart = perso.y
 
+    if c.chute_en_cours != 0:
+        s.saut_en_cours = 0
+        s.sur_le_mur = False
+        c.arrivee = 3*hauteur//4
+        c.vitesse += 1
+        perso.y += 0.05*c.vitesse*c.vitesse
+        if perso.y + perso_hauteur >= c.arrivee:
+            c.chute_en_cours = 0
+            perso.y = c.arrivee - perso_hauteur
+            c.vitesse = 1
+
     if s.saut_en_cours == 1:
         perso.y = 0.05*s.vitesse*s.vitesse - 5*s.vitesse + s.depart
-        
         s.vitesse += 1
         if s.phase_saut == 1:
             s.position_saut += 1
@@ -46,11 +58,8 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
             for spikes in liste_spike:
                 spikes.x -= perso.vitesse
             for ennemie1 in ennemie:
-                ennemie1.x -= perso.vitesse
-            
+                ennemie1.x -= perso.vitesse 
         perso.sens = 1
-
-     
 
     if keys[pygame.K_c]:
         if len(fireballs) < 1:
@@ -59,28 +68,25 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
             else:
                 fireballs.append(fireball(perso.x, perso.y-perso_hauteur/2, 50, 50, perso.sens))
 
-
-
-
     # Collision avec le mur
     for objet_mur in liste_mur:
         # Si le joueur est au-dessus du mur
-        if perso.y + perso_hauteur <= objet_mur.y:
+        if perso.y + perso_hauteur < objet_mur.y:
             s.arrivee = objet_mur.y
             s.sur_le_mur = False
         elif (perso.x + perso_largeur > objet_mur.x and perso.x < objet_mur.x + objet_mur.largeur and
-              perso.y + perso_hauteur > objet_mur.y and perso.y < objet_mur.y + objet_mur.hauteur):
+              perso.y + perso_hauteur >= objet_mur.y and perso.y < objet_mur.y + objet_mur.hauteur):
             # Collision avec le dessus du mur
             if perso.y + perso_hauteur - perso.vitesse <= objet_mur.y:
                 s.sur_le_mur = True
                 s.saut_en_cours = 0
+                c.arrivee = objet_mur.y
+                c.chute_en_cours = 0
                 perso.y = objet_mur.y - perso_hauteur
             # Empêcher de traverser le mur par le bas
             elif perso.y < objet_mur.y + objet_mur.hauteur and perso.y > objet_mur.y and s.saut_en_cours:
-                perso.y = objet_mur.y + objet_mur.hauteur
-                s.saut_en_cours = 0
-                s.phase_saut = 1
-                s.sur_le_mur = False
+                c.chute_en_cours = 1
+                c.arrivee = 3*hauteur//4
             else:
                 s.sur_le_mur = False
                 # Collision latérale droite
@@ -89,8 +95,10 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
                 # Collision latérale gauche
                 elif perso.x < objet_mur.x + objet_mur.largeur and perso.x + perso_largeur > objet_mur.x + objet_mur.largeur and perso.sens == 0:
                     perso.x = objet_mur.x + objet_mur.largeur
+        
         else:
             s.sur_le_mur = False
+  
         
         if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
             objet_mur.x = largeur-objet_mur.largeur+400
@@ -98,15 +106,16 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
         if spikes.x < -spikes.largeur:  # Si le mur sort de l'écran, le remettre à droite
                 spikes.x = largeur-spikes.largeur+400
 
-    if s.sur_le_mur==False and s.saut_en_cours == 0:
-        perso.y = min( 3*hauteur//4-perso_hauteur, perso.y + 1 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
+    if s.sur_le_mur==False and s.saut_en_cours == 0 :
+        perso.y = min( 3*hauteur//4-perso_hauteur, perso.y + 3 )  # Si le joueur ne touche pas le mur et n'est pas en saut, il tombe
 
     # Empêcher le joueur de sortir de l'écran
     perso.x = max(0, min(largeur - perso_largeur, perso.x))
     perso.y = max(0, min(hauteur - perso_hauteur, perso.y))
+    print(perso.x, perso.y)
 
     return perso, liste_mur,liste_spike, distance, ennemie
-
+    
 def affichage_boutton(screen, text, x, y, width, height, color, text_color): #exemple trouver sur internet à peut être améliorer
     pygame.draw.rect(screen, color, (x, y, width, height))  # Dessiner le rectangle du bouton
     font = pygame.font.Font(None, 36)  # Police par défaut, taille 36
@@ -117,6 +126,7 @@ def affichage_boutton(screen, text, x, y, width, height, color, text_color): #ex
 # Boucle principale
 running = True
 while running:
+    clock.tick(60)  # Limiter la boucle à 30 FPS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Fermer la fenêtre
             running = False
@@ -128,10 +138,10 @@ while running:
                 perso.y = 3*hauteur // 4 - perso_hauteur
                 ennemie1.x = largeur
                 ennemie1.y = 3*hauteur // 4 - ennemie1.hauteur
-                liste_mur = [Mur(0,  60,  50, 40, "image/mur_de10.png"),
-                            Mur(110, 60, 200, 20, "image/mur_de10.png"),
-                            Mur(400, 60, 200, 20, "image/mur_de10.png"),
-                            Mur(1000, 60,  100, 30, "image/mur_de10.png"),
+                liste_mur = [Mur(0,  61,  50, 40, "image/mur_de10.png"),
+                            Mur(110, 62, 200, 20, "image/mur_de10.png"),
+                            Mur(400, 63, 200, 20, "image/mur_de10.png"),
+                            Mur(1000, 64      ,  100, 30, "image/mur_de10.png"),
                             Mur(820, 2000,  0, 0, "image/fond.png")]  # Liste des obstacles
                 liste_spike= [spike(700, 0, 50, 30, "image/feu1.png"),
                                 spike(300, 0, 50, 30, "image/feu1.png")]
@@ -145,7 +155,7 @@ while running:
         screen.blit(background_image, (0, 0))
 
         # Mettre à jour la position du joueur
-        perso,liste_mur,liste_spike,distance,ennemie = gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie)
+        perso,liste_mur,liste_spike,distance,ennemie = gestion_touche(perso,liste_mur,liste_spike,s,c,distance,ennemie)
        
 
 
