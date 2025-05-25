@@ -123,6 +123,70 @@ def gestion_touche(perso,liste_mur,liste_spike,s,c,distance,ennemie):
 
     return perso, liste_mur,liste_spike, distance, ennemie
 
+
+def init_niveau1():
+    liste_mur = [
+        Mur(0,  61,  50, 40, "image/mur_de10.png"),
+        Mur(110, 62, 200, 20, "image/mur_de10.png"),
+        Mur(400, 63, 200, 20, "image/mur_de10.png"),
+        Mur(700, 200, 100, 20, "image/mur_de10.png"),
+        Mur(900, 300, 100, 20, "image/mur_de10.png"),
+        Mur(1000, 64, 100, 30, "image/mur_de10.png"),
+        Mur(820, 2000, 0, 0, "image/fond.png")
+    ]
+    liste_spike = [
+        spike(300, 0, 50, 30, "image/feu1.png"),
+        spike(700, 0, 50, 30, "image/feu1.png")
+    ]
+    ennemie = [
+        ennemi(600, 3*hauteur//4 - 40, 40, 40)
+    ]
+    return liste_mur, liste_spike, ennemie
+
+def init_niveau2():
+    liste_mur = [
+        Mur(0,  61,  50, 40, "image/mur_de10.png"),
+        Mur(200, 120, 200, 20, "image/mur_de10.png"),
+        Mur(500, 200, 150, 20, "image/mur_de10.png"),
+        Mur(800, 300, 100, 20, "image/mur_de10.png"),
+        Mur(950, 400, 100, 20, "image/mur_de10.png"),
+        Mur(1000, 64, 100, 30, "image/mur_de10.png"),
+        Mur(820, 2000, 0, 0, "image/fond.png")
+    ]
+    liste_spike = [
+        spike(350, 0, 50, 30, "image/feu1.png"),
+        spike(600, 0, 50, 30, "image/feu1.png"),
+        spike(850, 0, 50, 30, "image/feu1.png")
+    ]
+    ennemie = [
+        ennemi(400, 3*hauteur//4 - 40, 40, 40),
+        ennemi(900, 3*hauteur//4 - 40, 40, 40)
+    ]
+    return liste_mur, liste_spike, ennemie
+
+def init_niveau3():
+    liste_mur = [
+        Mur(0,  61,  50, 40, "image/mur_de10.png"),
+        Mur(150, 100, 150, 20, "image/mur_de10.png"),
+        Mur(400, 180, 200, 20, "image/mur_de10.png"),
+        Mur(700, 250, 150, 20, "image/mur_de10.png"),
+        Mur(950, 350, 100, 20, "image/mur_de10.png"),
+        Mur(1100, 450, 100, 20, "image/mur_de10.png"),
+        Mur(1000, 64, 100, 30, "image/mur_de10.png"),
+        Mur(820, 2000, 0, 0, "image/fond.png")
+    ]
+    liste_spike = [
+        spike(250, 0, 50, 30, "image/feu1.png"),
+        spike(500, 0, 50, 30, "image/feu1.png"),
+        spike(750, 0, 50, 30, "image/feu1.png"),
+        spike(1050, 0, 50, 30, "image/feu1.png")
+    ]
+    ennemie = [
+        ennemi(350, 3*hauteur//4 - 40, 40, 40),
+        ennemi(700, 3*hauteur//4 - 40, 40, 40),
+        ennemi(1000, 3*hauteur//4 - 40, 40, 40)
+    ]
+    return liste_mur, liste_spike, ennemie
 # Boucle principale
 running = True
 while running:
@@ -141,21 +205,31 @@ while running:
                 # Réinitialiser les variables du jeu
                 perso.x = largeur // 2
                 perso.y = 3*hauteur // 4 - perso_hauteur
-                ennemie1.x = largeur
-                ennemie1.y = 3*hauteur // 4 - ennemie1.hauteur
-                liste_mur = [Mur(0,  61,  50, 40, "image/mur_de10.png"),
-                            Mur(110, 62, 200, 20, "image/mur_de10.png"),
-                            Mur(400, 63, 200, 20, "image/mur_de10.png"),
-                            Mur(1000, 64, 100, 30, "image/mur_de10.png"),
-                            Mur(820, 2000, 0, 0, "image/fond.png")]
-                liste_spike = [spike(700, 0, 50, 30, "image/feu1.png"),
-                               spike(300, 0, 50, 30, "image/feu1.png")]
+                liste_mur, liste_spike, ennemie = init_niveau1()
+                play_again = True
+                distance = 0
+                fireballs.clear()
+            elif bouton_niveau_2.rect.collidepoint(mouse_x, mouse_y):
+                etat_jeu = 2
+                # Réinitialiser les variables du jeu
+                perso.x = largeur // 2
+                perso.y = 3*hauteur // 4 - perso_hauteur
+                liste_mur, liste_spike, ennemie = init_niveau2()
+                play_again = True
+                distance = 0
+                fireballs.clear()
+            elif bouton_niveau_3.rect.collidepoint(mouse_x, mouse_y):
+                etat_jeu = 3
+                # Réinitialiser les variables du jeu
+                perso.x = largeur // 2
+                perso.y = 3*hauteur // 4 - perso_hauteur
+                liste_mur, liste_spike, ennemie = init_niveau3()
                 play_again = True
                 distance = 0
                 fireballs.clear()
 
         # Gestion du bouton "Rejouer" en game over
-        if etat_jeu == 1 and not play_again and event.type == pygame.MOUSEBUTTONDOWN:
+        if not play_again and event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = event.pos
             if bouton_rejouer.rect.collidepoint(mouse_x, mouse_y):
                 etat_jeu = 0
@@ -184,9 +258,9 @@ while running:
             #mettre a jour position fireball
             for firebal in fireballs:
                 if firebal.sens == 1:
-                    firebal.x += abs(game_speed)*5
+                    firebal.x += abs(game_speed)*20
                 else:
-                    firebal.x -= abs(game_speed)*5
+                    firebal.x -= abs(game_speed)*20
                 if firebal.x > largeur:
                     fireballs.remove(firebal)
                 if firebal.x < 0:
@@ -259,146 +333,4 @@ while running:
 
     pygame.display.flip()
 
-pygame.quit()
-
-
-running = True
-while running:
-    clock.tick(120)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        if etat_jeu == 0:
-            affichage_accueil(screen, background_image, bouton_niveau_1, bouton_niveau_2, bouton_niveau_3)
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_x, mouse_y = event.pos
-                if bouton_niveau_1.x <= mouse_x <= bouton_niveau_1.x + bouton_niveau_1.largeur and bouton_niveau_1.y <= mouse_y <= bouton_niveau_1.y + bouton_niveau_1.hauteur:
-                    etat_jeu = 1
-                # Réinitialiser les variables du jeu
-                perso.x = largeur // 2
-                perso.y = 3*hauteur // 4 - perso_hauteur
-                ennemie1.x = largeur
-                ennemie1.y = 3*hauteur // 4 - ennemie1.hauteur
-                liste_mur = [Mur(0,  61,  50, 40, "image/mur_de10.png"),
-                            Mur(110, 62, 200, 20, "image/mur_de10.png"),
-                            Mur(400, 63, 200, 20, "image/mur_de10.png"),
-                            Mur(1000, 64      ,  100, 30, "image/mur_de10.png"),
-                            Mur(820, 2000,  0, 0, "image/fond.png")]  # Liste des obstacles
-                liste_spike= [spike(700, 0, 50, 30, "image/feu1.png"),
-                                spike(300, 0, 50, 30, "image/feu1.png")]
-                play_again = True
-                distance = 0
-                
-                fireballs.clear()
-        elif etat_jeu == 1:
-            if play_again:  # Si le jeu est en cours
-                # Afficher l'image de fond
-                screen.blit(background_image, (0, 0))
-
-                # Mettre à jour la position du joueur
-                perso,liste_mur,liste_spike,distance,ennemie = gestion_touche(perso,liste_mur,liste_spike,s,c,distance,ennemie)
-                #mettre a jour position ennemi a modifier il fait pas des aller retour
-                for mur in liste_mur:
-                    for ennemie1 in ennemie:
-                        if ( ennemie1.y>mur.y) and( (ennemie1.x<mur.x+mur.largeur and ennemie1.x+ennemie1.largeur>mur.x+mur.largeur) or (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x)):
-                            game_speed=-game_speed
-                        ennemie1.x += game_speed
-
-
-                #mettre a jour position fireball
-                for firebal in fireballs:
-                    if firebal.sens == 1:
-                        firebal.x += abs(game_speed)*5
-                    else:
-                        firebal.x -= abs(game_speed)*5
-                    if firebal.x > largeur:
-                        fireballs.remove(firebal)
-                    if firebal.x < 0:
-                        fireballs.remove(firebal)
-                # Afficher les fireballs
-                for firebal in fireballs:
-                    if firebal.sens == 1:
-                        screen.blit(firebal.image_right, (firebal.x, firebal.y))
-                    else:
-                        screen.blit(firebal.image_left, (firebal.x, firebal.y))
-                    for ennemie1 in ennemie:
-                        if (firebal.x + firebal.largeur > ennemie1.x and firebal.x < ennemie1.x + ennemie1.largeur and firebal.y + firebal.hauteur > ennemie1.y and firebal.y < ennemie1.y + ennemie1.hauteur):
-                            fireballs.remove(firebal)
-                            ennemie.remove(ennemie1)
-                for objet_mur in liste_mur:
-                    for firebal in fireballs:
-                        if (firebal.x + firebal.largeur > objet_mur.x and firebal.x < objet_mur.x + objet_mur.largeur and firebal.y + firebal.hauteur > objet_mur.y and firebal.y < objet_mur.y + objet_mur.hauteur):
-                            fireballs.remove(firebal)
-
-
-
-                # Vérifier la collision entre le perso et ennemis
-                for ennemie1 in ennemie:
-                        if (perso.x + perso_largeur > ennemie1.x and perso.x < ennemie1.x + ennemie1.largeur and perso.y + perso_hauteur > ennemie1.y and perso.y < ennemie1.y + ennemie1.hauteur):
-                            play_again = False
-
-
-                # Dessiner le mur
-                for objet_mur in liste_mur:
-                    screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
-                for spikes in liste_spike:
-                    spikes.animer()          
-                    screen.blit(spikes.image, (spikes.x, spikes.y))
-
-                    if (perso.x + perso_largeur > spikes.x and perso.x < spikes.x + spikes.largeur and perso.y + perso_hauteur > spikes.y and perso.y < spikes.y + spikes.hauteur):
-                        play_again = False
-                        print("collision avec le spike")
-
-
-
-       #        animation courir / sauter
-                keys = pygame.key.get_pressed()
-                if s.saut_en_cours:                                   # saut
-                     perso_image_actuelle = perso_image7
-                elif keys[pygame.K_RIGHT]:                                # course au sol
-                    perso_image_actuelle = perso_run_right[(pygame.time.get_ticks() // 100) % 3] 
-                elif keys[pygame.K_LEFT]:
-                    perso_image_actuelle = perso_run_left[(pygame.time.get_ticks() // 100) % 3] 
-                elif perso.sens==1:                                                 # immobile
-                    perso_image_actuelle = perso_image1
-                elif perso.sens==0:
-                    perso_image_actuelle = perso1_left
-
-                # Afficher le perso
-                if keys[pygame.K_LEFT]:
-                    perso_image_actuelle= perso_image11
-                screen.blit(perso_image_actuelle, (perso.x, perso.y))
-                font = pygame.font.Font(None, 20)  # Taille du texte
-                texte = font.render(f"Score:{distance}", True, (0, 0, 0))  # Blanc
-                screen.blit(texte, (920, 10))  # Position (x=20, y=10)
-                for ennemie1 in ennemie:
-                    if (ennemie1.temps_anim==0):
-                        screen.blit(ennemie1.image1, (ennemie1.x, ennemie1.y))
-                        ennemie1.temps_anim=ennemie1.temps_anim+1
-                    elif (ennemie1.temps_anim==1):
-                        screen.blit(ennemie1.image2, (ennemie1.x, ennemie1.y))
-                        ennemie1.temps_anim=ennemie1.temps_anim+1
-                    elif (ennemie1.temps_anim==2):
-                        screen.blit(ennemie1.image3, (ennemie1.x, ennemie1.y))
-                        ennemie1.temps_anim=0
-            elif not play_again:  # Si le jeu est terminé
-                # Vérifier si le joueur a cliqué sur le bouton "Rejouer"
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_x, mouse_y = event.pos
-                    if bouton_rejouer.y <= mouse_x <= bouton_rejouer.y + bouton_rejouer.largeur and bouton_rejouer.y <= mouse_y <= bouton_rejouer.y + bouton_rejouer.hauteur:
-                        etat_jeu = 0
-                else:  # Si le jeu est terminé
-                    # Afficher l'écran de Game Over
-    
-                    screen.blit(gameover_image, (0, 0))
-                    texte = font.render(f"Score:{distance}", True, (255,255,255))  # Blanc
-                    screen.blit(texte, (largeur//2-25, 50))  # Position (x=20, y=10)
-    
-                    # Afficher le bouton "Rejouer"
-                    bouton_rejouer.draw(screen)
-    # Mettre à jour l'affichage
-    pygame.display.flip()
-
-# Quitter pygame
 pygame.quit()
