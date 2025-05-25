@@ -1,9 +1,12 @@
 import pygame
+import random
 from variables import *
+
 # Initialisation de pygame et de la fenêtre
 pygame.init()
+clock = pygame.time.Clock()
 
-def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
+def gestion_touche(perso,liste_mur,liste_spike,s,c,distance,ennemie):
     keys = pygame.key.get_pressed()
     s.arrivee = hauteur//2
     # Gestion du saut
@@ -93,7 +96,10 @@ def gestion_touche(perso,liste_mur,liste_spike,s,distance,ennemie):
             s.sur_le_mur = False
         
         if objet_mur.x < -objet_mur.largeur:  # Si le mur sort de l'écran, le remettre à droite
+            objet_mur.largeur = random.randint(10,largeur//4)
+            objet_mur.hauteur = random.randint(10,hauteur//4)
             objet_mur.x = largeur-objet_mur.largeur+400
+            objet_mur.y = random.randint(hauteur//2,3*hauteur//4-objet_mur.hauteur)
     for spikes in liste_spike:
         if spikes.x < -spikes.largeur:  # Si le mur sort de l'écran, le remettre à droite
                 spikes.x = largeur-spikes.largeur+400
@@ -117,6 +123,7 @@ def affichage_boutton(screen, text, x, y, width, height, color, text_color): #ex
 # Boucle principale
 running = True
 while running:
+    clock.tick(50)  # Limiter la boucle à 30 FPS
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Fermer la fenêtre
             running = False
@@ -192,6 +199,7 @@ while running:
         
         # Dessiner le mur
         for objet_mur in liste_mur:
+            objet_mur.image = pygame.transform.scale(objet_mur.image, (objet_mur.largeur, objet_mur.hauteur))
             screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
         for spikes in liste_spike:
             screen.blit(spikes.image, (spikes.x, spikes.y))  # Afficher le spike
@@ -203,7 +211,7 @@ while running:
 
        #animation courir / sauter
         keys = pygame.key.get_pressed()
-        if s.saut_en_cours:                                   # saut
+        if s.saut_en_cours:                                       # saut
              perso_image_actuelle = perso_image7
         elif keys[pygame.K_RIGHT]:                                # course au sol
             perso_image_actuelle = perso_run_right[(pygame.time.get_ticks() // 100) % 3] 
