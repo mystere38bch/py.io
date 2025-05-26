@@ -134,7 +134,9 @@ def init_niveau1():
         Mur(700, 100, 100, 20, "image/mur_de10.png"),
         Mur(900, 150, 100, 20, "image/mur_de10.png"),
         Mur(1000, 64, 100, 30, "image/mur_de10.png"),
+        Mur(200, 3*hauteur//4, 50, 20, "image/mur_de10.png"),
         Mur(820, 2000, 0, 0, "image/fond.png")
+        
     ]
     liste_spike = [
         spike(300, 0, 50, 30, "image/feu1.png"),
@@ -179,8 +181,9 @@ def init_niveau3():
     ]
     liste_spike = [
         spike(350, 0, 50, 30, "image/feu1.png"),
-        spike(500, 0, 50, 30, "image/feu1.png"),
         spike(750, 0, 50, 30, "image/feu1.png"),
+        spike(950, 0, 50, 30, "image/feu1.png"),
+        spike(1000, 94, 50, 30, "image/feu1.png"),
         spike(1050, 0, 50, 30, "image/feu1.png")
     ]
     ennemie = [
@@ -241,6 +244,14 @@ while running:
         affichage_accueil(screen, background_image, bouton_niveau_1, bouton_niveau_2, bouton_niveau_3)
 
     elif etat_jeu == 1 or etat_jeu == 2 or etat_jeu == 3:
+        if distance==0:
+            if etat_jeu == 1:
+                liste_mur, liste_spike, ennemie = init_niveau1()
+            elif etat_jeu == 2:
+                liste_mur,liste_spike,ennemie= init_niveau2() 
+            else:
+                liste_mur,liste_spike,ennemie= init_niveau3()
+
         if play_again:
             # Afficher l'image de fond
             screen.blit(background_image, (0, 0))
@@ -254,9 +265,14 @@ while running:
             #mettre a jour position ennemi a modifier il fait pas des aller retour
             for mur in liste_mur:
                 for ennemie1 in ennemie:
-                    if ( ennemie1.y>mur.y) and( (ennemie1.x<mur.x+mur.largeur and ennemie1.x+ennemie1.largeur>mur.x+mur.largeur) or (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x)):
+                    if ennemie1.x > largeur:
                         game_speed=-game_speed
-                    ennemie1.x += game_speed
+                    elif ennemie1.y>mur.y+mur.hauteur:
+                        game_speed=game_speed
+                    elif ( ennemie1.y+2>mur.y) or( (ennemie1.x<mur.x+mur.largeur and ennemie1.x+ennemie1.largeur>mur.x+mur.largeur) or (ennemie1.x<mur.x and ennemie1.x+ennemie1.largeur>mur.x)):
+                        game_speed=-game_speed
+                    
+                    ennemie1.x += game_speed/3
             #mettre a jour position fireball
             for firebal in fireballs:
                 if firebal.sens == 1:
@@ -289,10 +305,8 @@ while running:
                     if (ennemie1.x < 0):
                         ennemie.remove(ennemie1)  # Si l'ennemi sort de l'écran, le remettre à droite
             
-            if len(ennemie)== 0:
-                ennemie = [
-                    ennemi(largeur, 3*hauteur//4 - 40, 40, 40)
-                ]
+            if len(ennemie)< etat_jeu :
+                ennemie.append(ennemi(largeur, 3*hauteur//4 - 40, 40, 40))
             # Dessiner le mur
             for objet_mur in liste_mur:
                 screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
