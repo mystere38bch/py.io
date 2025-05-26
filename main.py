@@ -74,9 +74,9 @@ def gestion_touche(perso,liste_mur,liste_spike,s,c,distance,ennemie):
     if keys[pygame.K_c]:
         if len(fireballs) < 1:
             if perso.sens == 1:
-                fireballs.append(fireball(perso.x+perso_largeur, perso.y-perso_hauteur/2, 50, 50, perso.sens))
+                fireballs.append(fireball(perso.x+perso_largeur, perso.y, 50, 50, perso.sens))
             else:
-                fireballs.append(fireball(perso.x, perso.y-perso_hauteur/2, 50, 50, perso.sens))
+                fireballs.append(fireball(perso.x, perso.y, 50, 50, perso.sens))
 
     # Collision avec le mur
     for objet_mur in liste_mur:
@@ -286,6 +286,13 @@ while running:
                     if (perso.x + perso_largeur > ennemie1.x and perso.x < ennemie1.x + ennemie1.largeur and perso.y + perso_hauteur > ennemie1.y and perso.y < ennemie1.y + ennemie1.hauteur):
                         play_again = False
                         mort_ennemi_son.play()
+                    if (ennemie1.x < 0):
+                        ennemie.remove(ennemie1)  # Si l'ennemi sort de l'écran, le remettre à droite
+            
+            if len(ennemie)== 0:
+                ennemie = [
+                    ennemi(largeur, 3*hauteur//4 - 40, 40, 40)
+                ]
             # Dessiner le mur
             for objet_mur in liste_mur:
                 screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
