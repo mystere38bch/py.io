@@ -131,8 +131,8 @@ def init_niveau1():
         Mur(0,  61,  50, 40, "image/mur_de10.png"),
         Mur(110, 62, 200, 20, "image/mur_de10.png"),
         Mur(400, 63, 200, 20, "image/mur_de10.png"),
-        Mur(700, 200, 100, 20, "image/mur_de10.png"),
-        Mur(900, 300, 100, 20, "image/mur_de10.png"),
+        Mur(700, 100, 100, 20, "image/mur_de10.png"),
+        Mur(900, 150, 100, 20, "image/mur_de10.png"),
         Mur(1000, 64, 100, 30, "image/mur_de10.png"),
         Mur(820, 2000, 0, 0, "image/fond.png")
     ]
@@ -150,8 +150,8 @@ def init_niveau2():
         Mur(0,  61,  50, 40, "image/mur_de10.png"),
         Mur(200, 120, 200, 20, "image/mur_de10.png"),
         Mur(500, 200, 150, 20, "image/mur_de10.png"),
-        Mur(800, 300, 100, 20, "image/mur_de10.png"),
-        Mur(950, 400, 100, 20, "image/mur_de10.png"),
+        Mur(800, 200, 100, 20, "image/mur_de10.png"),
+        Mur(950, 340, 100, 20, "image/mur_de10.png"),
         Mur(1000, 64, 100, 30, "image/mur_de10.png"),
         Mur(820, 2000, 0, 0, "image/fond.png")
     ]
@@ -178,7 +178,7 @@ def init_niveau3():
         Mur(820, 2000, 0, 0, "image/fond.png")
     ]
     liste_spike = [
-        spike(250, 0, 50, 30, "image/feu1.png"),
+        spike(350, 0, 50, 30, "image/feu1.png"),
         spike(500, 0, 50, 30, "image/feu1.png"),
         spike(750, 0, 50, 30, "image/feu1.png"),
         spike(1050, 0, 50, 30, "image/feu1.png")
@@ -192,7 +192,7 @@ def init_niveau3():
 # Boucle principale
 running = True
 while running:
-    clock.tick(120)  # 60 FPS, plus fluide et suffisant
+    #clock.tick(120)  # 120 FPS, plus fluide et suffisant
 
     #Gestion des événements (clics, fermeture, etc.)
     for event in pygame.event.get():

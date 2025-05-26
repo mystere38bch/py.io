@@ -4,7 +4,11 @@ import pygame
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
+<<<<<<< HEAD
 game_speed = 1  # Vitesse de déplacement du mur
+=======
+game_speed = 0.5  # Vitesse de déplacement du mur
+>>>>>>> b3b2298f67ba3703c76c96b5886dbd00e1551fb6
 distance = 0
 
 #Bouton rejouer
@@ -19,9 +23,9 @@ class Bouton:
         self.color = color
 
     def draw(self, screen):
-        # Dessine un rectangle blanc
+        # Dessine le rectagnle du bouton
         pygame.draw.rect(screen, self.color, self.rect)
-        # Affiche le texte centré en noir
+        # Affichage du texte
         font = pygame.font.Font(None, 36)
         text_surface = font.render(self.text, True, (0, 0, 0))
         text_rect = text_surface.get_rect(center=self.rect.center)
@@ -38,7 +42,7 @@ bouton_niveau_2 = Bouton(largeur // 2 -100, hauteur // 2 + 150, 200, 50, "Niveau
 bouton_niveau_3 = Bouton(largeur // 2  +200, hauteur // 2 + 150, 200, 50, "Niveau 3", (255, 255, 0))
 
 # Perso
-perso_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
+perso_image = pygame.image.load("image/perso1.png") 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 perso_image = pygame.transform.scale(perso_image, (perso_largeur, perso_hauteur))  # Redimensionner l'image du perso
 class Joueur:
@@ -51,7 +55,7 @@ class Joueur:
         self.sens = 1
         self.run=0
 
-perso = Joueur(largeur//2, 3*hauteur//4, 0.5)  # Initialisation du perso 
+perso = Joueur(largeur//2, 3*hauteur//4, 1)  # Initialisation du perso 
 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 
