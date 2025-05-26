@@ -306,8 +306,6 @@ while running:
             elif perso.sens==0:
                 perso_image_actuelle = perso1_left
             # Afficher le perso
-            if keys[pygame.K_LEFT]:
-                perso_image_actuelle= perso_image11
             screen.blit(perso_image_actuelle, (perso.x, perso.y))
             font = pygame.font.Font(None, 20)  # Taille du texte
             texte = font.render(f"Score:{distance}", True, (0, 0, 0))  # Blanc
