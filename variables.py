@@ -4,11 +4,7 @@ import pygame
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
-<<<<<<< HEAD
 game_speed = 1  # Vitesse de déplacement du mur
-=======
-game_speed = 0.5  # Vitesse de déplacement du mur
->>>>>>> b3b2298f67ba3703c76c96b5886dbd00e1551fb6
 distance = 0
 
 #Bouton rejouer
