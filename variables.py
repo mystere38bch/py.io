@@ -8,9 +8,29 @@ game_speed = 0.2  # Vitesse de déplacement du mur
 distance = 0
 
 #Bouton rejouer
-bouton_width, bouton_height = 200, 50
-bouton_x = (largeur - bouton_width) // 2  # Centré horizontalement
-bouton_y = ((hauteur - bouton_height) // 10)*9  # Centré verticalement
+class Bouton:
+    def __init__(self, x, y, width, height, text, color=(0, 0, 0)):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.x = x
+        self.y = y
+        self.largeur = width
+        self.hauteur = height
+        self.color = color
+
+    def draw(self, screen):
+        # Dessine un rectangle blanc
+        pygame.draw.rect(screen, self.color, self.rect)
+        # Affiche le texte centré en noir
+        font = pygame.font.Font(None, 36)
+        text_surface = font.render(self.text, True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.rect.center)
+        screen.blit(text_surface, text_rect)
+
+bouton_rejouer = Bouton(largeur // 2 - 100, hauteur // 2 + 200, 200, 50, "Rejouer", (255, 0, 0))
+bouton_niveau_1 = Bouton(largeur // 2 - 400, hauteur // 2 + 150, 200, 50, "Niveau 1", (0, 255, 0))
+bouton_niveau_2 = Bouton(largeur // 2 -100, hauteur // 2 + 150, 200, 50, "Niveau 2", (0, 0, 255))
+bouton_niveau_3 = Bouton(largeur // 2  +200, hauteur // 2 + 150, 200, 50, "Niveau 3", (255, 255, 0))
 
 # Perso
 perso_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
@@ -109,6 +129,13 @@ class Saut:
         self.depart=3*hauteur//4
 s=Saut(0,0,1)
 
+class Chute:
+    def __init__(self,chute_en_cours):
+        self.chute_en_cours=chute_en_cours
+        self.arrivee=3*hauteur//4
+        self.vitesse=1
+        self.depart=3*hauteur//4
+c=Chute(0)
 
 #Game over
 gameover_image = pygame.image.load("game_over.png")
