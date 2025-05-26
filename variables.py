@@ -33,7 +33,7 @@ bouton_niveau_2 = Bouton(largeur // 2 -100, hauteur // 2 + 150, 200, 50, "Niveau
 bouton_niveau_3 = Bouton(largeur // 2  +200, hauteur // 2 + 150, 200, 50, "Niveau 3", (255, 255, 0))
 
 # Perso
-perso_image = pygame.image.load("Capture d'écran 2024-09-27 201400.png") 
+perso_image = pygame.image.load("image/perso1.png") 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 perso_image = pygame.transform.scale(perso_image, (perso_largeur, perso_hauteur))  # Redimensionner l'image du perso
 class Joueur:
