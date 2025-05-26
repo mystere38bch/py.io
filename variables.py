@@ -4,7 +4,11 @@ import pygame
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
+<<<<<<< HEAD
+game_speed = 1  # Vitesse de déplacement du mur
+=======
 game_speed = 0.5  # Vitesse de déplacement du mur
+>>>>>>> b3b2298f67ba3703c76c96b5886dbd00e1551fb6
 distance = 0
 
 #Bouton rejouer
@@ -26,6 +30,11 @@ class Bouton:
         text_surface = font.render(self.text, True, (0, 0, 0))
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
+
+#ajout Effets sonores
+pygame.mixer.init()                
+mort_feu_son = pygame.mixer.Sound("Son/mort_feu.mp3") 
+mort_ennemi_son = pygame.mixer.Sound("Son/mort_ennemi.mp3") 
 
 bouton_rejouer = Bouton(largeur // 2 - 100, hauteur // 2 + 200, 200, 50, "Rejouer", (255, 0, 0))
 bouton_niveau_1 = Bouton(largeur // 2 - 400, hauteur // 2 + 150, 200, 50, "Niveau 1", (0, 255, 0))

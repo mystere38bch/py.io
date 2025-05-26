@@ -6,6 +6,8 @@ pygame.init()
 clock = pygame.time.Clock()
 etat_jeu = 0 
 
+
+
 def affichage_accueil(screen, background_image,bouton_niveau1, bouton_niveau2,bouton_niveau3):
     # Afficher l'image de fond
     screen.blit(background_image, (0, 0))
@@ -283,6 +285,7 @@ while running:
             for ennemie1 in ennemie:
                     if (perso.x + perso_largeur > ennemie1.x and perso.x < ennemie1.x + ennemie1.largeur and perso.y + perso_hauteur > ennemie1.y and perso.y < ennemie1.y + ennemie1.hauteur):
                         play_again = False
+                        mort_ennemi_son.play()
             # Dessiner le mur
             for objet_mur in liste_mur:
                 screen.blit(objet_mur.image, (objet_mur.x, objet_mur.y))
@@ -291,6 +294,7 @@ while running:
                 screen.blit(spikes.image, (spikes.x, spikes.y))
                 if (perso.x + perso_largeur > spikes.x and perso.x < spikes.x + spikes.largeur and perso.y + perso_hauteur > spikes.y and perso.y < spikes.y + spikes.hauteur):
                     play_again = False
+                    mort_feu_son.play()     
                     print("collision avec le spike")
             #------------------------------------------------peut ralentir le jeu a partir de la
             #        animation courir / sauter
