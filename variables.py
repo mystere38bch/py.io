@@ -4,7 +4,7 @@ import pygame
 # Dimensions de la fenêtre
 largeur, hauteur = 1000, 600
 play_again = True
-game_speed = 0.2  # Vitesse de déplacement du mur
+game_speed = 0.5  # Vitesse de déplacement du mur
 distance = 0
 
 #Bouton rejouer
@@ -19,9 +19,9 @@ class Bouton:
         self.color = color
 
     def draw(self, screen):
-        # Dessine un rectangle blanc
+        # Dessine le rectagnle du bouton
         pygame.draw.rect(screen, self.color, self.rect)
-        # Affiche le texte centré en noir
+        # Affichage du texte
         font = pygame.font.Font(None, 36)
         text_surface = font.render(self.text, True, (0, 0, 0))
         text_rect = text_surface.get_rect(center=self.rect.center)
@@ -46,7 +46,7 @@ class Joueur:
         self.sens = 1
         self.run=0
 
-perso = Joueur(largeur//2, 3*hauteur//4, 0.5)  # Initialisation du perso 
+perso = Joueur(largeur//2, 3*hauteur//4, 1)  # Initialisation du perso 
 
 perso_largeur, perso_hauteur = 50, 50  # Taille du perso
 
